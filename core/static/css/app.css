@@ -1,0 +1,82 @@
+.clear_header{
+
+    padding:0px;
+    margin-top:0px;
+
+}
+.upper {
+    text-transform: uppercase;
+}
+
+/* Navigation*/
+
+.navbar {
+    background-color: transparent;
+}
+
+.scrolling-navbar {
+    -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out;
+    -moz-transition: background .5s ease-in-out, padding .5s ease-in-out;
+    transition: background .5s ease-in-out, padding .5s ease-in-out;
+}
+
+.top-nav-collapse {
+    background-color: #011474;
+}
+
+footer.page-footer {
+    background-color: #f1dc1c;
+    margin-top: 2rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .navbar {
+        background-color: #011474;
+    }
+}
+
+/*Call to action*/
+
+.flex-center {
+    color: #fff;
+}
+
+html, body{
+
+    height:100%;
+
+}
+
+.view{
+  /* Set rules to fill background */
+  background:url("https://swimmingworld.azureedge.net/news/wp-content/uploads/2015/01/job.jpg") no-repeat center center fixed;
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+
+   background-color: hsla(0,0%,100%,0.5);
+   background-blend-mode: overlay;
+
+}
+view
+
+
+/*Contact section*/
+
+#contact .fa {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1C2331;
+}
+
+.footer-content > *, .footer-content ul > li > a {
+    color: #3E4551;
+}
