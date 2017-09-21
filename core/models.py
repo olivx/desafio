@@ -6,28 +6,27 @@ from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, SUPERIOR
 # Create your models here.
 
 class Company(models.Model):
-    end = models.ForeignKey('Address', null=True, blank=True)
+
     vaga = models.CharField('Vaga', max_length=100)
     salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
     salario_max = models.DecimalField('Salario Max', max_digits=10, decimal_places=2)
     experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
-    escolariodade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
+    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
     distancia_max = models.IntegerField('Distancia Maxima')
 
     def __str__(self):
         return self.vaga
 
     class Meta:
-        verbose_name = 'Endereco'
-        verbose_name_plural = 'Enderecos'
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
 
 
 class Candidate(models.Model):
-    end = models.ForeignKey('Address')
     user = models.ForeignKey(User)
     salario = models.DecimalField('Salario Pretenido', decimal_places=2, max_digits=10)
     experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
-    escolariodade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
+    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
 
     def __str__(self):
         if self.user.get_full_name() == '':
@@ -40,6 +39,8 @@ class Candidate(models.Model):
 
 
 class Address(models.Model):
+    end = models.ForeignKey('Company', null=True, blank=True)
+    end = models.ForeignKey('Candidate', null=True, blank=True)
     logradouro = models.CharField('Logradouro', max_length=50)
     endereco = models.CharField('Endereco', max_length=60)
     numero = models.PositiveIntegerField("Numero")
