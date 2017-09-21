@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('jobauth.urls', namespace='accounts')),
+    url(r'^job/', include('core.urls', namespace='core')),
 
 ]

@@ -16,16 +16,13 @@
         </h2>
         <h3 class="wow fadeInDown" data-wow-delay="0.5s">
 
-          <a href="#">
-            <button type="button" class="btn btn-success">
+          <a href="{% url 'core:vagas_list' %}" role="button" class="btn btn-success">
               PARA CANDIDATOS
-            </button>
           </a>
 
-          <a href="#">
-            <button type="button" class="btn btn btn-primary">
+          <a href="{% url  'accounts:login' %}" role="button"
+             class="btn btn btn-primary">
               PARA EMPRESA
-            </button>
           </a>
         </h3>
 
