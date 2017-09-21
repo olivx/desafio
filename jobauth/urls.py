@@ -7,7 +7,7 @@ urlpatterns = [
 
     # url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'logout', logout_thanks, name='logout_tanks'),
-    url(r'^accounts/login/$', login, {
+    url(r'^login/$', login, {
         'template_name': 'core/login.html',
         'authentication_form': AuthenticationForm,
     }, name='login'),

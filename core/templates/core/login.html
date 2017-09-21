@@ -57,7 +57,7 @@
                 <div class="panel-heading">
                     <div class="panel-title">Login</div>
                     <div style="float:right; font-size: 80%; position: relative; top:-10px">
-						<a href="#">Esqueceu a Senha ?</a></div>
+                        <a href="#">Esqueceu a Senha ?</a></div>
                 </div>
 
 
@@ -94,9 +94,14 @@
                             <!-- Button -->
                             <div class="col-sm-12 controls">
                                 <button id="btn-login" type="submit"
-										class="btn btn-block btn-primary">
-									Login
-								</button>
+                                        class="btn btn-block btn-primary">
+                                    Login
+                                </button>
+
+                                <a role="button" id="btn-register" type="submit"
+                                        class="btn btn-block btn-success">
+                                    Não tem Registro ainda ?
+                                </a>
                             </div>
                         </div>
                     </form> <!-- form -->
@@ -106,4 +111,4 @@
 
         </div>
     </div>
-{% endblock %}
+    {% endblock %}
