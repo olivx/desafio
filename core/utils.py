@@ -1,3 +1,5 @@
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+
 SEIS_MESES = 1
 UM_ANO = 2
 DOIS_ANOS = 2
@@ -25,3 +27,16 @@ LIST_ESCOLARIDADE = (
     (SEGUNDO_GRAU_COMPLETO, 'Segundo Grau completo '),
     (SEGUNDO_GRAU_CURSANDO, 'Segundo Grau cursando'),
 )
+
+
+def paginator(request, object_list, por_page=5):
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(object_list, por_page)
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        objects_paginated = paginator.page(1)
+    except EmptyPage:
+        objects_paginated = paginator.page(paginator.num_pages)
+    return objects_paginated
