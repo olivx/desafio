@@ -179,16 +179,15 @@ $(function(){
             type: 'post',
 
             beforeSend: function(){
-                var x = confirm('Voce realmente deseja Desativar esse cliente ?')
+                var x = confirm('Voce realmente deseja deletar essa Empresa ?')
                 if(x == false){
                     return false;
                 }
             },
             success: function(data){
-
-                $('#contact-table tbody').html(data.html_table);
+                $('#company-table tbody').html(data.html_table);
                 $('.pagination').html(data.html_pagination)
-                $('#modal').modal('hide');
+                $('#company-modal').modal('hide');
                 $('.messages').html(data.message);
 
             }
@@ -206,8 +205,8 @@ $(function(){
     $('#company-modal').on('submit', '.js-company-form-update', saveCompanyForm);
 
     // delete company
-    $('#comapny-table').on('click' , '.js-open-company-form-delete', loadCompanyForm);
-    $('#comapny-modal').on('submit', '.js-company-form-delete', deleteCompanyForm);
+    $('#company-table').on('click' , '.js-open-company-form-delete', loadCompanyForm);
+    $('#company-modal').on('submit', '.js-company-form-delete', deleteCompanyForm);
 
 
     // method end

@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url as r
+from core.services import view_service_save, view_service_delete
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from core.forms import JobForm, CompanyForm
-from core.services import view_service
 from core.models import Company, Job
 from django.http import JsonResponse
-from django.contrib import messages
 from jobauth.models import Profile
 from core.utils import paginator
 from django.db.models import Q
@@ -50,16 +49,30 @@ def company_list(request):
 @login_required(login_url='/accounts/login')
 def company_save(request):
     obj = Company()
-    return view_service(request=request, object=obj, Form=CompanyForm, klass=Company,
-                        template_name='core/company/company_modal_save.html', context_list='company_list',
-                        template_table='core/company/company_table.html',
-                        message_success='Compania foi adcionada com sucesso', )
+    return view_service_save(request=request, object=obj, Form=CompanyForm, klass=Company,
+                             template_name='core/company/company_modal_save.html', context_list='company_list',
+                             template_table='core/company/company_table.html',
+                             message_success='Compania foi adcionada com sucesso', )
 
 
 @login_required(login_url="/accounts/login")
 def company_update(request, pk):
     obj = get_object_or_404(Company, pk=pk)
-    return view_service(request=request, object=obj, Form=CompanyForm, klass=Company,
-                        template_name='core/company/company_modal_update.html', context_list='company_list',
-                        template_table='core/company/company_table.html', message_type='warning',
-                        message_success='Compania foi alterada com sucesso', )
+    message_update = 'Compania %s foi alterada com sucesso' % obj.name.upper()
+    return view_service_save(request=request, object=obj, Form=CompanyForm, klass=Company,
+                             message_type='warning',
+                             context_list='company_list',
+                             message_success=message_update,
+                             template_table='core/company/company_table.html',
+                             template_name='core/company/company_modal_update.html', )
+
+
+@login_required(login_url="/accounts/login")
+def company_delete(request, pk):
+    obj = get_object_or_404(Company, pk=pk)
+    message_delete = 'Compania %s foi deletada com sucesso' % obj.name.upper()
+    return view_service_delete(request=request, object=obj, Form=CompanyForm, klass=Company,
+                               context_list='company_list',
+                               template_table='core/company/company_table.html',
+                               message_success=message_delete,
+                               template_name='core/company/company_modal_delete.html', )
