@@ -32,6 +32,7 @@ class Job(models.Model):
     distancia_max = models.IntegerField('D. Maxima')
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Vaga'
         verbose_name_plural = 'Vagas'
 

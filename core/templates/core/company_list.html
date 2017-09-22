@@ -5,41 +5,17 @@
 
 {% block content %}
 
-<div class="row">
-    <h1 class="page-header upper"
-        style="margin-top:0px; padding:0px;">
-        {{ empresa }}
-    </h1>
-</div>
-
 <div class="messages">
     {% include 'core/messages.html' %}
 </div>
 
-
-<form action="#" method="get">
-    {% csrf_token %}
-
-    <div class="form-group">
-        <div class="input-group col-md-8">
-            <input type="text" class="form-control" name="search"
-                   placeholder="Descrição da Oportunidade">
-
-            <div class="input-group-btn">
-                <button class="btn btn-primary" type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-</form>
-
 <div class="row">
+
     <div class="col-md-6">
-        <table id="table-job" class="table table-striped table-hover table-condensed">
+        <table id=job-table" class="table table-striped table-hover table-condensed job-table">
             <thead>
             <tr>
-                <th width="500">CANDIDATO</th>
+                <th width="500">VAGA</th>
                 <th width="30">EDITAR</th>
                 <th width="30">DELETAR</th>
 
@@ -47,53 +23,30 @@
             </thead>
 
             <tbody>
-
-            <tr>
-                <th class="upper" width="500"> </th>
-
-                <th  class="text-center upper" width="30">
-                    <button class="btn btn-warning js-open-form-job"
-                            data-url="{{ v.get_absolute_url }}">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                    </button>
-                </th>
-
-                <th  class="text-center upper" width="30">
-                    <button class="btn btn-danger js-open-form-job"
-                            data-url="{{ v.get_absolute_url }}">
-                        <i class="glyphicon glyphicon-trash"></i>
-                    </button>
-                </th>
-
-
-            </tr>
-
+                {% include 'core/job/job_table.html' %}
             </tbody>
 
-            <tfoot>
-
-            </tfoot>
         </table>
 
 
         <div class="text-center">
 
-            {% if users.has_other_pages %}
+            {% if job_list.has_other_pages %}
             <ul class="pagination">
-                {% if users.has_previous %}
-                <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                {% if job_list.has_previous %}
+                <li><a href="?page={{ job_list.previous_page_number }}">&laquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
-                {% for i in users.paginator.page_range %}
-                {% if users.number == i %}
+                {% for i in job_list.paginator.page_range %}
+                {% if job_list.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                 {% else %}
                 <li><a href="?page={{ i }}">{{ i }}</a></li>
                 {% endif %}
                 {% endfor %}
-                {% if users.has_next %}
-                <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+                {% if job_list.has_next %}
+                <li><a href="?page={{ job_list.next_page_number }}">&raquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
                 {% endif %}
@@ -110,7 +63,6 @@
                 <th width="500">EMPRESA</th>
                 <th width="30">EDITAR</th>
                 <th width="30">DELETAR</th>
-
             </tr>
             </thead>
 
@@ -119,10 +71,6 @@
             {% include 'core/company/company_table.html' %}
 
             </tbody>
-
-            <tfoot>
-
-            </tfoot>
         </table>
 
 
@@ -155,8 +103,8 @@
     <div class="row">
         <div class="col-md-offset-2 col-md-4">
             <div class="form-group">
-                <button type="button" class="btn btn-block btn-primary "
-                        data-url="#">
+                <button type="button" class="btn btn-block btn-primary js-open-form-job"
+                        data-url="{% url 'core:job_save'%}">
                     Nova Vaga <span class="glyphicon glyphicon-plus"></span>
                 </button>
             </div>
@@ -175,6 +123,16 @@
 
 
     <div id="company-modal"   class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+
+
+            </div><!-- content -->
+        </div>
+    </div>
+
+    <div id="job-modal"   class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
 

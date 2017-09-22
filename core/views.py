@@ -35,13 +35,52 @@ def job_detail(request, pk):
     return JsonResponse(data)
 
 
+@login_required(login_url="/accounts/login")
+def job_save(request):
+    obj = Job()
+    message_save = 'Oportunidade  foi adicionada com sucesso'
+    return view_service_save(request=request, object=obj, Form=JobForm, klass=Job,
+                             message_type='success',
+                             context_list='job_list',
+                             message_success=message_save,
+                             template_table='core/job/job_table.html',
+                             template_name='core/job/job_modal_save.html', )
+
+
+@login_required(login_url="/accounts/login")
+def job_update(request, pk):
+    obj = get_object_or_404(Job, pk=pk)
+    message_update = 'Oportunidade %s foi alterada com sucesso' % obj.name.upper()
+    return view_service_save(request=request, object=obj, Form=JobForm, klass=Job,
+                             message_type='warning',
+                             context_list='job_list',
+                             message_success=message_update,
+                             template_table='core/job/job_table.html',
+                             template_name='core/job/job_modal_update.html', )
+
+
+@login_required(login_url="/accounts/login")
+def job_delete(request, pk):
+    obj = get_object_or_404(Job, pk=pk)
+    message_delete = 'Job %s foi deletado com sucesso' % obj.name.upper()
+    return view_service_delete(request=request, object=obj, Form=JobForm, klass=Job,
+                               context_list='job_list',
+                               template_table='core/job/job_table.html',
+                               message_success=message_delete,
+                               template_name='core/job/job_modal_delete.html')
+
+
+
+
 @login_required(login_url='/accounts/login/')
 def company_list(request):
     if request.user.profile.kind == Profile.EMPLOYEE:
         return redirect(r('core:job_list'))
+    jobs = paginator(request=request, object_list=Job.objects.all(), por_page=5)
     companies = paginator(request=request, object_list=Company.objects.all(), por_page=5)
     context = {
-        'company_list': companies
+        'company_list': companies,
+        'job_list': jobs
     }
     return render(request, 'core/company_list.html', context)
 
@@ -64,7 +103,7 @@ def company_update(request, pk):
                              context_list='company_list',
                              message_success=message_update,
                              template_table='core/company/company_table.html',
-                             template_name='core/company/company_modal_update.html', )
+                             template_name='core/company/company_modal_update.html')
 
 
 @login_required(login_url="/accounts/login")
@@ -75,4 +114,4 @@ def company_delete(request, pk):
                                context_list='company_list',
                                template_table='core/company/company_table.html',
                                message_success=message_delete,
-                               template_name='core/company/company_modal_delete.html', )
+                               template_name='core/company/company_modal_delete.html')

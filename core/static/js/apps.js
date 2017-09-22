@@ -1,26 +1,6 @@
 $(function(){
 
 
-    // ajustar
-   $('.documento').each(function(){
-        var documento = ''
-        if ($(this).is('th')){
-            documento = $(this).text();
-        }
-
-        if ($(this).is('input')){
-            documento = $(this).val();
-        }
-
-        doc = documento.replace(/[\.\-\/ ]+/g, '')
-        if (doc.length == 14 ){
-
-             $('.documento').mask('00.000.000/0000-00', {reverse: true});
-        }else{
-            $('.documento').mask('000.000.000-00', {reverse: true});
-        }
-   });
-
     function loadJobForm(){
          var btn = $(this);
         $.ajax({
@@ -42,36 +22,27 @@ $(function(){
             }
         });
     };
-
     function saveJobForm(){
         var form =  $(this);
-            $.ajax({
-                url:  form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                dataType: 'json',
+        $.ajax({
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            dataType: 'json',
+            success: function(data){
+                if(data.is_form_valid){
 
-                success: function(data){
-                    if(data.is_form_valid){
+                    $('#job-table tbody').html(data.html_table);
+                    $('.messages').html(data.message)
+                    $('#job-modal').modal('hide');
 
-                        $('#cliente-table tbody').html(data.html_table);
-                        $('.message').html(data.message)
-                        $('#cliente-modal').modal('hide');
-
-                    }else{
-                        $('#cliente-modal .modal-content').html(data.html_form);
-                        tipo = $('select').val()
-                        if(tipo  == 2){
-                            $('.documento').mask('000.000.000-00', {reverse: true});
-                        }else{
-                            $('.documento').mask('00.000.000/000-00', {reverse: true});
-                        }
+                }else{
+                    $('#job-modal .modal-content').html(data.html_form);
                     }
                 }
         });
     return false;
     };
-
 
     function deleteJobForm(){
         var form =  $(this);
@@ -91,33 +62,29 @@ $(function(){
                 success: function(data){
                     if(data.is_form_valid){
 
-                        $('#cliente-table tbody').html(data.html_table);
-                        $('.message').html(data.message)
-                        $('#cliente-modal').modal('hide');
+                        $('.job-table tbody').html(data.html_table);
+                        $('.messages').html(data.message)
+                        $('#job-modal').modal('hide');
 
                     }else{
-                        $('#cliente-modal .modal-content').html(data.html_form);
-                        tipo = $('select').val()
-                        if(tipo  == 2){
-                            $('.documento').mask('000.000.000-00', {reverse: true});
-                        }else{
-                            $('.documento').mask('00.000.000/000-00', {reverse: true});
-                        }
+                        $('#job-modal .modal-content').html(data.html_form);
                     }
                 }
         });
     return false;
     };
 
-    // save job form
+    // save job
     $('.js-open-form-job').click(loadJobForm);
     $('#job-modal').on('submit', '.js-save-job-form', saveJobForm);
 
+    // update job
+    $('.job-table').on('click','button', loadJobForm);
+    $('#job-modal').on('submit', '.js-update-job-form', saveJobForm);
 
-
+    $('#job-modal').on('submit', '.js-delete-job-form', deleteJobForm);
 
     // company  methods
-
     function loadCompanyForm(){
         var btn =  $(this);
         $.ajax({
@@ -143,7 +110,6 @@ $(function(){
             }
         });
     };
-
     function saveCompanyForm(){
         var form = $(this);
         $.ajax({
@@ -168,7 +134,6 @@ $(function(){
         });
     return false;
     };
-
     function deleteCompanyForm(){
         var form = $(this);
         $.ajax({
