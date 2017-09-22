@@ -37,19 +37,18 @@
             </div>
         </div>
 
-        {% if user.is_authenticated %}
+        {% if request.user.is_authenticated %}
         <div class="alert alert-warning alert-dismissible" role="alert">
             <button type="button" class="close" aria-label="Close" data-dismiss="alert">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {% blocktrans with username=request.user.username trimmed %}
-            You are authenticated as {{ username }}, but are not authorized to
-            access this page. Would you like to login to a different account?
-            {% endblocktrans %}
+            Você está autenticado com {{ request.user.email|upper }},
+            Gostaria de mudar o login ? , para isso faça o logout antes.
         </div>
         {% endif %}
 
 
+        {% if not  request.user.is_authenticated %}
         <div id="loginbox" style="margin-top:50px;"
              class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 
@@ -100,7 +99,7 @@
                                 </button>
 
                                 <a role="button" id="btn-register" href="{% url 'accounts:signup' %}"
-                                        class="btn btn-block btn-success">
+                                   class="btn btn-block btn-success">
                                     Não tem Registro ainda ?
                                 </a>
                             </div>
@@ -111,7 +110,7 @@
             </div>
 
         </div>
-
+        {% endif %}
 
     </div>
     {% endblock %}
