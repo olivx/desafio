@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url as r
 from core.services import view_service_save, view_service_delete
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from core.forms import JobForm, CompanyForm
-from core.models import Company, Job
+from core.forms import JobForm, CompanyForm, CandidateForm
+from core.models import Company, Job, Candidate
 from django.http import JsonResponse
 from jobauth.models import Profile
 from core.utils import paginator
@@ -16,10 +17,29 @@ def home(request):
     return render(request, 'core/index.html')
 
 
+def profile_save(request, pk):
+
+    obj = Candidate.objects.get(user__id=pk)
+    form = CandidateForm(request.POST or None, instance=obj)
+    print obj
+    if request.method == 'POST':
+        if form.is_valid():
+            candidate = form.save(commit=False)
+            candidate.user = request.user
+            candidate.save()
+            messages.success(request, 'Perfil savo com sucesso.')
+        else:
+            messages.error(request, 'Foram encontrados erros durante o processamento.')
+
+    else:
+        form = CandidateForm(instance=obj)
+    return render(request, 'core/candidate/candidate_profile.html', {'form': form})
+
+
 def job_list(request):
     search = request.GET.get('search')
     if search is not None:
-        _list = Job.objects.filter(Q(name__icontains=search) | Q(copany__name__icontains=search))
+        _list = Job.objects.filter(Q(name__icontains=search) | Q(company__name__icontains=search))
     else:
         _list = Job.objects.all()
     return render(request, 'core/job_list.html', {'job_list': _list})
@@ -33,6 +53,14 @@ def job_detail(request, pk):
     data['html_form'] = \
         render_to_string('core/job/job_detail.html', {'form': form}, request=request)
     return JsonResponse(data)
+
+
+def job_candidate(request, job, user):
+    job = get_object_or_404(Job, pk=job)
+    user = get_object_or_404(Candidate, pk=user)
+    if request.method == 'POST':
+        job.candidates.add(user)
+        job.save()
 
 
 @login_required(login_url="/accounts/login")
@@ -68,8 +96,6 @@ def job_delete(request, pk):
                                template_table='core/job/job_table.html',
                                message_success=message_delete,
                                template_name='core/job/job_modal_delete.html')
-
-
 
 
 @login_required(login_url='/accounts/login/')

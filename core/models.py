@@ -1,7 +1,9 @@
 from django.db import models
 from cuser.models import CUser as User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import resolve_url as r
-from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, SUPERIOR_COMPLETO
+from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, DEFAULT
 
 
 # Create your models here.
@@ -23,12 +25,13 @@ class Company(models.Model):
 
 class Job(models.Model):
     company = models.ForeignKey(Company)
+    candidates = models.ManyToManyField('Candidate')
     name = models.CharField('Vaga', max_length=100)
     description = models.TextField('Description')
     salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
     salario_max = models.DecimalField('Salario Max', max_digits=10, decimal_places=2)
-    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
-    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
+    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=DEFAULT)
+    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=DEFAULT)
     distancia_max = models.IntegerField('D. Maxima')
 
     class Meta:
@@ -46,8 +49,8 @@ class Job(models.Model):
 class Candidate(models.Model):
     user = models.ForeignKey(User)
     salario = models.DecimalField('Salario Pretenido', decimal_places=2, max_digits=10)
-    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
-    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
+    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=DEFAULT)
+    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=DEFAULT)
 
     def __str__(self):
         if self.user.get_full_name() == '':
@@ -55,8 +58,15 @@ class Candidate(models.Model):
         return self.user.email
 
     class Meta:
-        verbose_name = 'Endereco'
-        verbose_name_plural = 'Enderecos'
+        verbose_name = 'Candidatos'
+        verbose_name_plural = 'Candidatos'
+
+
+@receiver(post_save, sender=User)
+def create_or_update_candidate(sender, instance, created, **kwargs):
+    if created:
+        Candidate.objects.create(user=instance)
+    instance.candidate.save()
 
 
 class Address(models.Model):

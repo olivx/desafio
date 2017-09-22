@@ -18,7 +18,11 @@
 
     <div class="modal-footer">
         {% if user.is_authenticated %}
-        <button type="submit" class="btn btn-primary">Deseja se Candidatar</button>
+            {% if user.profile.kind == user.profile.EMPLOYEE %}
+        <button type="submit" class="btn btn-primary">
+            Deseja se Candidatar
+        </button>
+            {% endif %}
         {% endif %}
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
     </div>

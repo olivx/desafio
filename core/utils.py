@@ -15,12 +15,14 @@ LIST_EXPERIENCIA = (
     (MAIS_DE_QUATRO_ANOS, '5 anos ou mais '),
 )
 
+DEFAULT = 0
 SUPERIOR_COMPLETO = 1
 SUPERIOR_CURSANDO = 2
 NIVEL_TECNICO = 3
 SEGUNDO_GRAU_COMPLETO = 4
 SEGUNDO_GRAU_CURSANDO = 5
 LIST_ESCOLARIDADE = (
+    (DEFAULT, '-------------'),
     (SUPERIOR_COMPLETO, 'Ensino superior completo'),
     (SUPERIOR_CURSANDO, 'Ensino superior cursando'),
     (NIVEL_TECNICO, 'Nivel Tecnico'),

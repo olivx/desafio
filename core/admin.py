@@ -1,9 +1,10 @@
 from django.contrib import admin
-from core.models import Company, Job
-from core.forms import JobForm, CompanyForm
-
+from core.models import Company, Job, Candidate
+from core.forms import JobForm, CompanyForm, CandidateForm
 
 # Register your models here.
+from jobauth.models import Profile
+
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
@@ -20,3 +21,8 @@ class JobAdmin(admin.ModelAdmin):
     list_filter = ('distancia_max', 'experiencia', 'escolaridade')
     list_display = ('name', 'experiencia', 'escolaridade', 'distancia_max',
                     'salario_min', 'salario_max')
+
+@admin.register(Candidate)
+class CandidateAdmin(admin.ModelAdmin):
+    form = CandidateForm
+

@@ -23,7 +23,7 @@ class JobForm(forms.ModelForm):
                   'experiencia', 'escolaridade', 'distancia_max',)
 
 
-class CandidateFrom(forms.ModelForm):
+class CandidateForm(forms.ModelForm):
     class Meta:
         model = Candidate
-        fields = ('user', 'salario', 'experiencia', 'escolaridade',)
+        fields = ('salario', 'experiencia', 'escolaridade',)

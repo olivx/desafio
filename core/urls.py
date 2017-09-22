@@ -15,4 +15,9 @@ urlpatterns = [
     url(r'company/delete/(?P<pk>\d+)/$', core_views.company_delete, name='company_delete'),
 
 
+    url(r'profile_save/(?P<pk>\d+)/$', core_views.profile_save, name='profile_save'),
+
+
+
+
 ]
