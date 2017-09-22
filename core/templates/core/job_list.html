@@ -8,7 +8,7 @@
 <div class="row">
     <h1 class="page-header"
         style="margin-top:0px; padding:0px;">
-        Empresas <small>oportunidades</small>
+        Oportunidades <small></small>
     </h1>
 </div>
 
@@ -48,9 +48,11 @@
 <table id="table" class="table table-striped table-hover table-condensed">
     <thead>
     <tr>
-        <th width="600">VAGA</th>
+        <th width="150">Empresa</th>
+        <th width="500">VAGA</th>
         <th width="120">PRETENÇÃO</th>
         <th class="text-center" width="30">EXPERIENCIA</th>
+        <th class="text-center" width="30">INFO</th>
 
     </tr>
     </thead>
@@ -58,10 +60,16 @@
     <tbody>
 
     <tr>
-        {% for v in vaga_list %}
-        <th class="upper" width="600">{{ v }}</th>
+        {% for v in job_list %}
+        <th class="upper" width="150">{{ v.company.name }}</th>
+        <th class="upper" width="500">{{ v }}</th>
         <th width="120">{{ v.salario_min }} até {{ v.salario_max }}</th>
         <th  class="text-center upper" width="30">{{ v.get_experiencia_display }}</th>
+        <th  class="text-center upper" width="30">
+            <button class="btn btn-primary" data-url="{{ v.get_absolute_url }}">
+                <i class="glyphicon glyphicon-star-empty"></i>
+            </button>
+        </th>
         {% endfor %}
     </tr>
 
@@ -71,6 +79,8 @@
 
     </tfoot>
 </table>
+
+
 <div class="text-center">
   <ul class="pagination">
     {% if page_obj.has_previous %}

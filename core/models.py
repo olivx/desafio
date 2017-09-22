@@ -1,25 +1,41 @@
 from django.db import models
 from cuser.models import CUser as User
+from django.shortcuts import resolve_url as r
 from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, SUPERIOR_COMPLETO
 
 
 # Create your models here.
 
 class Company(models.Model):
-
-    vaga = models.CharField('Vaga', max_length=100)
-    salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
-    salario_max = models.DecimalField('Salario Max', max_digits=10, decimal_places=2)
-    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
-    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
-    distancia_max = models.IntegerField('Distancia Maxima')
+    name = models.CharField('Empresa', max_length=100)
 
     def __str__(self):
-        return self.vaga
+        return self.name
 
     class Meta:
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
+
+
+class Job(models.Model):
+    company = models.ForeignKey(Company)
+    name = models.CharField('Vaga', max_length=100)
+    description = models.TextField('Description')
+    salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
+    salario_max = models.DecimalField('Salario Max', max_digits=10, decimal_places=2)
+    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=SEIS_MESES)
+    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=SUPERIOR_COMPLETO)
+    distancia_max = models.IntegerField('D. Maxima')
+
+    class Meta:
+        verbose_name = 'Vaga'
+        verbose_name_plural = 'Vagas'
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return r('core:job_detail', pk=self.pk)
 
 
 class Candidate(models.Model):
