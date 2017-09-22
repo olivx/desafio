@@ -8,6 +8,7 @@ urlpatterns = [
 
     url(r'company/$', core_views.company_list, name='company_list'),
     url(r'company/save/$', core_views.company_save, name='company_save'),
+    url(r'company/update/(?P<pk>\d+)/$', core_views.company_update, name='company_update'),
 
 
 ]

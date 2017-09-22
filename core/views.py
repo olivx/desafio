@@ -2,12 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect, resolve_url as
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from core.forms import JobForm, CompanyForm
+from core.services import view_service
 from core.models import Company, Job
 from django.http import JsonResponse
 from django.contrib import messages
 from jobauth.models import Profile
-from django.db.models import Q
 from core.utils import paginator
+from django.db.models import Q
 
 
 # Create your views here.
@@ -48,34 +49,17 @@ def company_list(request):
 
 @login_required(login_url='/accounts/login')
 def company_save(request):
-    template_save = 'core/company/company_model_save.html'
-    template_table = 'core/company/company_table.html'
-    message_success = 'Compania foi adcionada com sucesso'
-    message_error = 'Foi encontrado algo errado no processo, ' \
-                    'corrija os erros a baixo no formulario e tente novamente'
-    data = {}
-    form = CompanyForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            data['is_form_valid'] = True
-            companies = paginator(request, Company.objects.all())
-            data['html_table'] = \
-                render_to_string(template_table, {'company_list': companies}, request=request)
+    obj = Company()
+    return view_service(request=request, object=obj, Form=CompanyForm, klass=Company,
+                        template_name='core/company/company_modal_save.html', context_list='company_list',
+                        template_table='core/company/company_table.html',
+                        message_success='Compania foi adcionada com sucesso', )
 
-            message = message_success
-            messages.error(request, message)
-            data['message'] = render_to_string('core/messages.html', {}, request=request)
 
-        else:
-            data['is_form_valid'] = False
-            message = message_error
-            messages.error(request, message)
-            data['message'] = render_to_string('core/messages.html', {}, request=request)
-            data['html_form'] = \
-                render_to_string(template_save, {'form': form}, request=request)
-    else:
-        data['html_form'] = \
-            render_to_string(template_save, {'form': form}, request=request)
-
-    return JsonResponse(data)
+@login_required(login_url="/accounts/login")
+def company_update(request, pk):
+    obj = get_object_or_404(Company, pk=pk)
+    return view_service(request=request, object=obj, Form=CompanyForm, klass=Company,
+                        template_name='core/company/company_modal_update.html', context_list='company_list',
+                        template_table='core/company/company_table.html', message_type='warning',
+                        message_success='Compania foi alterada com sucesso', )

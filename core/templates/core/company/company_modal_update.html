@@ -1,9 +1,10 @@
 {% load static %}
-<form action="{%  url 'core:company_save' %}" class="js-save-company-form" method="post">
+<form action="{%  url 'core:company_update' form.instance.id %}"
+      class="js-company-form-update" method="post">
 
     {% csrf_token %}
     <div class="modal-header">
-        <h4 class="modal-title">Vaga Info</h4>
+        <h4 class="modal-title">Alterar Compania</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -19,7 +20,7 @@
 
     <div class="modal-footer">
         {% if user.is_authenticated %}
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-warning">Alterar</button>
         {% endif %}
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
     </div>

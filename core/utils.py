@@ -30,13 +30,13 @@ LIST_ESCOLARIDADE = (
 
 
 def paginator(request, object_list, por_page=5):
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(object_list, por_page)
     try:
-        pages = paginator.page(page)
+        page = request.GET.get('page', 1)
     except PageNotAnInteger:
-        objects_paginated = paginator.page(1)
+        page = 1
     except EmptyPage:
-        objects_paginated = paginator.page(paginator.num_pages)
+        page = paginator.page(paginator.num_pages)
+
+    pages = Paginator(object_list, por_page)
+    objects_paginated = pages.page(page)
     return objects_paginated

@@ -8,6 +8,7 @@ from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, SUPERIOR
 
 class Company(models.Model):
     name = models.CharField('Empresa', max_length=100)
+
     # address = models.OneToOneField('Address')
 
 
@@ -15,6 +16,7 @@ class Company(models.Model):
         return self.name
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
 
@@ -57,7 +59,6 @@ class Candidate(models.Model):
 
 
 class Address(models.Model):
-
     logradouro = models.CharField('Logradouro', max_length=50)
     endereco = models.CharField('Endereco', max_length=60)
     numero = models.PositiveIntegerField("Numero")

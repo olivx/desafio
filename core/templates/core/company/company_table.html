@@ -3,8 +3,8 @@
     <th class="upper" width="500"> {{ company  }}</th>
 
     <th  class="text-center upper" width="30">
-        <button class="btn btn-warning js-open-form-job"
-                data-url=" ">
+        <button class="btn btn-warning js-open-company-form-update"
+                data-url="{% url 'core:company_update' company.id %}">
             <i class="glyphicon glyphicon-pencil"></i>
         </button>
     </th>
