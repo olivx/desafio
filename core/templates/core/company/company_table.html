@@ -1,0 +1,21 @@
+{% for company in company_list %}
+<tr>
+    <th class="upper" width="500"> {{ company  }}</th>
+
+    <th  class="text-center upper" width="30">
+        <button class="btn btn-warning js-open-form-job"
+                data-url=" ">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </button>
+    </th>
+
+    <th  class="text-center upper" width="30">
+        <button class="btn btn-danger js-open-form-job"
+                data-url=" ">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </th>
+
+
+</tr>
+{% endfor %}
