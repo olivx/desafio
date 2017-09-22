@@ -21,22 +21,23 @@ $(function(){
         }
    });
 
-    function loadClientForm(){
+    function loadJobForm(){
          var btn = $(this);
         $.ajax({
             url: btn.attr('data-url'),
             type: 'GET',
             dataType: 'json',
             beforeSend: function(){
-                $('#cliente-modal').modal('show');
+                $('#job-modal').modal('show');
             },
             success: function(data){
-                $('#cliente-modal .modal-content').html(data.html_form);
+                $('#job-modal .modal-content').html(data.html_form);
+
                 if(data.disable_all){
-                    $('#cliente-modal input').attr('disabled','disabled');
-                    $('#cliente-modal textarea').attr('disabled','disabled');
-                    $('#cliente-modal select').attr('disabled','disabled');
-                    $('#cliente-modal input[name=csrfmiddlewaretoken]').removeAttr('disabled');
+                    $('#job-modal input').attr('disabled','disabled');
+                    $('#job-modal textarea').attr('disabled','disabled');
+                    $('#job-modal select').attr('disabled','disabled');
+                    $('#job-modal input[name=csrfmiddlewaretoken]').removeAttr('disabled');
                 }
             }
         });
@@ -108,48 +109,11 @@ $(function(){
     return false;
     };
 
-     $('#cliente-modal').on('change', 'select', function(){
-            var _select = $(this);
-            if(_select.val() == 2){
-                $('form').find('#div-razao-social label').text('Nome:');
-                $('form').find('#div-nome-fantasia label').text('Sobre Nome:');
-                $('form').find('#div-documento label').text('CPF:');
-                $('.documento').val('')
-                $('.documento').mask('000.000.000-00', {reverse: true});
-            }else{
-                $('form').find('#div-razao-social label').text('Razão Social:');
-                $('form').find('#div-nome-fantasia label').text('Nome Fantasia:');
-                $('form').find('#div-documento label').text('CNPJ:');
-                $('.documento').val('')
-                $('.documento').mask('00.000.000/0000-00', {reverse: true});
-            }
-        });
+    // save job form
+    $('.js-open-form-job').click(loadJobForm);
+    $('#job-modal').on('submit', '.js-save-job-form', saveClientForm);
 
-     $("#cliente-modal").on("shown.bs.modal", function (e) {
-        $('.documento').mask('00.000.000/0000-00', {reverse: true});
-        $('select').on('change', function(){
-            var _select = $(this);
-            if(_select.val() == 2){
-                $('.documento').val('')
-                $('.documento').mask('000.000.000-00', {reverse: true});
-            }else{
-                $('.documento').val('')
-                $('.documento').mask('00.000.000/0000-00', {reverse: true});
-                }
-            });
-        });
 
-    // save cliente form
-    $('.js-open-form-cliente').click(loadClientForm);
-    $('#cliente-modal').on('submit', '.js-save-client-form', saveClientForm);
-
-    // update cliente form
-    $('#cliente-table').on('click' , '.js-update-modal-cliente', loadClientForm);
-    $('#cliente-modal').on('submit', '.js-update-client-form', saveClientForm);
-
-    // delete client
-    $('#cliente-table').on('click', '.js-delete-modal-cliente', loadClientForm);
-    $('#cliente-modal').on('submit', '.js-delete-client-form', deleteClientForm);
 
 
     // contact methods

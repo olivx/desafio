@@ -1,0 +1,82 @@
+{% load widget_tweaks %}
+
+
+
+<div class="form-group {% if form.company.errors %} has-error {% endif  %}">
+    {{ form.company.label_tag }}
+    {% render_field form.company  class='form-control upper' %}
+    {% for error in form.company.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="form-group {% if form.name.errors %} has-error {% endif  %}">
+    {{ form.name.label_tag }}
+    {% render_field form.name  class='form-control upper' %}
+    {% for error in form.name.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="form-group {% if form.description.errors %} has-error {% endif  %}">
+    {{ form.description.label_tag }}
+    {% render_field form.description  class='form-control upper' rows='3' %}
+    {% for error in form.description.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group {% if form.salario_min.errors %} has-error {% endif  %}">
+            {{ form.salario_min.label_tag }}
+            {% render_field form.salario_min  class='form-control upper' %}
+            {% for error in form.salario_min.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group {% if form.salario_max.errors %} has-error {% endif  %}">
+            {{ form.salario_max.label_tag }}
+            {% render_field form.salario_max  class='form-control upper'%}
+            {% for error in form.salario_max.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group {% if form.experiencia.errors %} has-error {% endif  %}">
+            {{ form.experiencia.label_tag }}
+            {% render_field form.experiencia  class='form-control upper' %}
+            {% for error in form.experiencia.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group {% if form.distancia_max.errors %} has-error {% endif  %}">
+            {{ form.distancia_max.label_tag }}
+            {% render_field form.distancia_max  class='form-control upper' %}
+            {% for error in form.distancia_max.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group {% if form.escolaridade.errors %} has-error {% endif  %}">
+            {{ form.escolaridade.label_tag }}
+            {% render_field form.escolaridade  class='form-control upper' %}
+            {% for error in form.escolaridade.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+

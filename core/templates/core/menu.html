@@ -24,10 +24,16 @@
 
                 {% if user.is_authenticated %}
 
-                  <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
-                    <a href="#">Minas Vagas</a>
-                </li>
+                    {% if user.profile.kind == 2 %}
+                    <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
+                        <a href="#">Minhas Vagas</a>
+                    </li>
+                    {% else %}
 
+                    <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
+                        <a href="#">Meus Cadidatos</a>
+                    </li>
+                    {% endif %}
                 {% endif %}
 
 
@@ -95,7 +101,7 @@
 
                         <li>
                             <a href="{% url 'accounts:logout_tanks' %}">
-                            Logout
+                                Logout
                             </a>
                         </li>
 
