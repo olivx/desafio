@@ -13,7 +13,7 @@ class AddressForm(forms.ModelForm):
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ('name',)
+        fields = ('name', )
 
 
 class JobForm(forms.ModelForm):

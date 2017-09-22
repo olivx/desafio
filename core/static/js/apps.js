@@ -43,7 +43,7 @@ $(function(){
         });
     };
 
-    function saveClientForm(){  
+    function saveJobForm(){
         var form =  $(this);
             $.ajax({
                 url:  form.attr('action'),
@@ -73,7 +73,7 @@ $(function(){
     };
 
 
-    function deleteClientForm(){
+    function deleteJobForm(){
         var form =  $(this);
             $.ajax({
                 url:  form.attr('action'),
@@ -111,14 +111,14 @@ $(function(){
 
     // save job form
     $('.js-open-form-job').click(loadJobForm);
-    $('#job-modal').on('submit', '.js-save-job-form', saveClientForm);
+    $('#job-modal').on('submit', '.js-save-job-form', saveJobForm);
 
 
 
 
-    // contact methods
+    // company  methods
 
-    function loadContactForm(){
+    function loadCompanyForm(){
         var btn =  $(this);
         $.ajax({
             url:        btn.attr('data-url'),
@@ -126,10 +126,10 @@ $(function(){
             dataType:   'json',
 
             beforeSend: function(){
-                $('#modal').modal('show');
+                $('#company-modal').modal('show');
             },
             success: function(data){
-                $('#modal .modal-content').html(data.html_form);
+                $('#company-modal .modal-content').html(data.html_form);
                 if(data.disable_all){
 
                     $('input').attr('disabled', 'disabled')
@@ -144,7 +144,7 @@ $(function(){
         });
     };
 
-    function saveContactForm(){
+    function saveCompanyForm(){
         var form = $(this);
         $.ajax({
             dataType: 'json',
@@ -154,23 +154,22 @@ $(function(){
 
             success: function(data){
                 if(data.is_form_valid){
-                    $('#contact-table tbody').html(data.html_table);
-                    $('#client-form').html(data.html_form);
-                    $('.pagination_contact').html(data.html_pagination)
+                    $('#table-company tbody').html(data.html_table);
+//                    $('#client-form').html(data.html_form);
                     $('.messages').html(data.message);
-                    $('#modal').modal('hide');
+                    $('#company-modal').modal('hide');
 
 
                 }else{
 
-                    $('#modal .modal-content').html(data.html_form);
+                    $('#company-modal .modal-content').html(data.html_form);
                 }
             }
         });
     return false;
     };
 
-    function deleteContactForm(){
+    function deleteCompanyForm(){
         var form = $(this);
         $.ajax({
 
@@ -198,82 +197,17 @@ $(function(){
      return false;
     };
 
-    $('.js-open-contact-form',).click(loadContactForm);
+    // save company
+    $('.js-open-company-form').click(loadCompanyForm);
+    $('#company-modal').on('submit', '.js-save-company-form', saveCompanyForm);
 
-    $('#modal').on('submit', '.js-open-contact-form', saveContactForm);
+    // update company
+    $('#company-table').on('click', '.js-open-company-form-update', loadCompanyForm);
+    $('#company-modal').on('submit', '.js-company-form-update', saveCompanyForm);
 
-    // contact update
-    $('#contact-table').on('click', '.js-open-contact-form-update', loadContactForm);
-    $('#modal').on('submit', '.js-client-contact-form-update', saveContactForm);
-
-    // deactivation contact
-    $('#contact-table').on('click' , '.js-open-contact-form-delete', loadContactForm);
-    $('#modal').on('submit', '.js-contact-form-delete', deleteContactForm);
-
-
-    // email formset
-    // add item email formset
-    $('#modal').on('click' , '#add-email', function(){
-
-        var count = $('#email-formset').children().length;
-        var tmp = $("#contact-email").html();
-        var new_email_form = tmp.replace(/__prefix__/g, count);
-        $("div#email-formset").append(new_email_form);
-
-         // update form email valid total forms
-         $('#id_email-TOTAL_FORMS').attr('value', parseInt(count) );
-
-         // animate to scroll
-        $('#modal, .modal-body').animate({
-            scrollTop: $("#add-email").position().top-200
-          }, 1500);
-
-    });
-
-     //remove item email formset
-    $('#modal').on('click' , '#remove-email', function(){
-        count =  $('#email-formset').children().length;
-        if (count > 1){
-            $('#email-formset div').last().remove();
-            $('#id_email-TOTAL_FORMS').attr('value' , parseInt(count -1 ));
-        }else{
-
-            alert('Opa! 1 é minimo de email field para o formulario.')
-        }
-    });
-
-    // add item telefone formset
-    $('#modal').on('click', '#add-telefone', function(){
-
-        var count =  $('#telefone-formset').children().length;
-        var tmp = $('#contact-telefone').html();
-        var new_telefone_form =  tmp.replace(/__prefix__/g, count);
-        $('div#telefone-formset').append(new_telefone_form);
-
-        // upate validate formset
-        $('#id_telefone-TOTAL_FORMS').attr('value', count + 1)
-
-        // animate to scroll
-        $('#modal, .modal-body').animate({
-            scrollTop: $('#add-telefone').position().top-200
-        }, 1500);
-
-    });
-
-    // remove formset element
-    $('#modal').on('click', '#remove-telefone', function(){
-
-        count =  $('#telefone-formset').children().length;
-        if( count > 1){
-
-            $('#telefone-formset .form-group').last().remove();
-            $('#id_telefone-TOTAL_FORMS').attr('value', count - 1);
-
-        }else{
-
-            alert('Opa! 1 é minimo de telefone field para o formulario.')
-        }
-    });
+    // delete company
+    $('#comapny-table').on('click' , '.js-open-company-form-delete', loadCompanyForm);
+    $('#comapny-modal').on('submit', '.js-company-form-delete', deleteCompanyForm);
 
 
     // method end
@@ -435,150 +369,6 @@ $(function(){
     });
 
 
-    function loadProductForm(){
-
-       var btn = $(this);
-
-       $.ajax({
-
-            type:'get',
-            dataType:'json',
-            url: btn.attr('data-url'),
-
-            beforeSend: function(){
-
-                $('#modal-product').modal('show');
-
-            },
-            success: function(data){
-
-                $('#modal-product .modal-content').html(data.html_form)
-                $('.money').mask("#.##0,00", {reverse: true});
-
-                if(data.disable_all){
-
-                   $("#modal-product input").attr('disabled','disabled');
-                   $("#modal-product select").attr('disabled','disabled');
-                   $("#modal-product textarea").attr('disabled','disabled');
-                   $("#modal-product input[name=csrfmiddlewaretoken]").removeAttr('disabled');
-
-
-                }
-            }
-
-
-       });
-
-    };
-
-    function saveProductForm(){
-        var form = $(this);
-
-        var valor = $('.money').val();
-        $('.money').val(valor.replace('.','').replace(',', '.'))
-
-
-
-        $.ajax({
-            dataType: 'json',
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: form.serialize(),
-
-            success: function(data){
-
-                if(data.is_form_valid){
-
-                    $('#messages').html(data.message)
-                    $('#table-product tbody').html(data.html_table);
-                    $('#modal-product').modal('hide');
-
-                }else{
-
-                   $('#modal-product .modal-content').html(data.html_form);
-                   $('.money').mask("#.##0,00", {reverse: true});
-
-                }
-            }
-
-        });
-    return false;
-    };
-
-    // product
-    $('#product-create').click(loadProductForm);
-    $('#modal-product').on('submit' , '.js-form-product-save' , saveProductForm);
-
-    $('#table-product').on('click' , '.js-open-form-update', loadProductForm);
-    $('#modal-product').on('submit', '.js-form-product-update', saveProductForm);
-
-    $('#table-product').on('click' , '.js-open-form-delete', loadProductForm);
-    $('#modal-product').on('submit' , '.js-form-product-delete', function(){
-
-        var x = confirm('Tem certeza que deseja deletar esse produto ?')
-        if(x == false){
-            return false;
-        }
-
-    });
-
-    //group
-
-    function loadGroupProductForm (){
-
-        var btn = $(this);
-        $.ajax({
-            url: btn.attr('data-url'),
-            type: 'get',
-            dataType: 'json',
-
-           beforeSend: function(){
-
-                $('#modal-product').modal('hide');
-                $('#modal-group').modal('show');
-
-           },
-            success: function(data){
-
-                $('#modal-group .modal-content').html(data.html_form);
-                $('#modal-group .modal-content tbody').html(data.html_table);
-
-            }
-
-        });
-
-    };
-
-    function saveGroupProductForm(){
-
-        var form = $('form');
-        var btn = $(this);
-        $.ajax({
-            url: btn.attr('data-url'),
-            type: 'post',
-            data: form.serialize(),
-            dataType: 'json',
-
-            success: function(data){
-                if(data.is_form_valid){
-                    $('#modal-group .modal-content').html(data.html_form);
-                    $('#modal-group .modal-content tbody').html(data.html_table);
-
-                }else{
-                    $('#modal-group .modal-content').html(data.html_form);
-                    $('#modal-group .modal-content tbody').html(data.html_table);
-
-
-                }
-
-                $('.modal .modal-body').css('overflow-y','auto');
-                $('.modal .modal-body').css('height' , $(window).height() * 0.7 );
-
-            }
-        });
-       return false;
-    };
-
     $('#modal-group').on('shown.bs.modal', function(){
         $('.modal .modal-body').css('overflow-y','auto');
         $('.modal .modal-body').css('height' , $(window).height() * 0.7 );
@@ -610,48 +400,6 @@ $(function(){
         });
     });
 
-    // open from product form
-    $('#modal-product').on('click', '.js-open-modal-group', loadGroupProductForm);
-
-    // open from grou form link or clean form from button limpar
-    $('#modal-group').on('click', '.js-open-modal-group', loadGroupProductForm);
-
-    // save update and delete from group from
-    $('#modal-group').on('click', '.js-save-modal-group', saveGroupProductForm);
-    $('#modal-group').on('click', '.js-update-modal-group', saveGroupProductForm);
-
-    // delete group
-    $('#modal-group').on('click', '.js-delete-modal-group', function(){
-
-        var btn = $(this);
-        var form = $('form');
-        $.ajax({
-            url: btn.attr('data-url'),
-            type: 'post',
-            data: form.serialize(),
-            dataType: 'json',
-            beforeSend: function(){
-                var _confirm = confirm('Você realmente deseja deletar esse Grupo');
-                if(_confirm == false){
-                    return false;
-                }
-            },
-            success: function(data){
-
-                if(data.is_form_valid){
-                    $('#modal-group .modal-content').html(data.html_form);
-                    $('#modal-group .modal-content tbody').html(data.html_table);
-                }else{
-                        $('#modal-group .modal-content').html(data.html_form);
-                        $('#modal-group .modal-content tbody').html(data.html_table);
-                    }
-
-                $('.modal .modal-body').css('overflow-y','auto');
-                $('.modal .modal-body').css('height' , $(window).height() * 0.7 );
-            }
-        });
-    return false;
-    });
 
 
 });
