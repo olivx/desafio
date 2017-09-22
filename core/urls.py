@@ -1,8 +1,12 @@
 from django.conf.urls import url
-from core.views import vagas_list
+from core import views as core_views
 
 urlpatterns = [
 
-    url(r'^vagas/list/', vagas_list, name='vagas_list'),
+    url(r'list/$', core_views.job_list, name='job_list'),
+    url(r'company/$', core_views.company_list, name='company_list'),
+    url(r'detail/(?P<pk>\d+)/$', core_views.job_detail, name='job_detail'),
+
+
 
 ]
