@@ -5,7 +5,8 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth import get_user_model
 
-from jobauth.models import Profile
+from jobauth.forms import CandidateForm
+from jobauth.models import Profile, Candidate
 
 
 class ProfileInline(admin.StackedInline):
@@ -13,6 +14,12 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Profile'
     fk_name = 'user'
+
+
+@admin.register(Candidate)
+class CandidateAdmin(admin.ModelAdmin):
+    form = CandidateForm
+
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline, )

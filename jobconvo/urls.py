@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^company/', include('company.urls', namespace='company')),
     url(r'^accounts/', include('jobauth.urls', namespace='accounts')),
 
+
+
+
 ]

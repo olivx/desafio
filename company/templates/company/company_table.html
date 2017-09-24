@@ -3,10 +3,10 @@
     <th class="upper" width="500"> {{ company  }}</th>
 
     <th  class="text-center upper" width="30">
-        <button class="btn btn-primary"
-                data-url="#">
+        <a role="button" class="btn btn-primary "
+                href="{% url 'core:address' company.id %}">
             <i class="glyphicon glyphicon-map-marker"></i>
-        </button>
+        </a>
     </th>
 
     <th  class="text-center upper" width="30">

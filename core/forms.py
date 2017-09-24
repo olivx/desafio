@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from django import forms
 
-from core.models import Address, Candidate
+from core.models import Address
+
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -8,9 +10,3 @@ class AddressForm(forms.ModelForm):
         fields = ('cep', 'endereco', 'numero', 'complemento',
                   'bairro', 'cidade', 'uf', 'observacao',)
 
-
-
-class CandidateForm(forms.ModelForm):
-    class Meta:
-        model = Candidate
-        fields = ('salario', 'experiencia', 'escolaridade',)

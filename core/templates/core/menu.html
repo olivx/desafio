@@ -24,7 +24,7 @@
 
                 {% if user.is_authenticated %}
 
-                {% if user.profile.kind == 2 %}
+                {% if user.profile.kind == request.user.profile.EMPLOYEE %}
                 <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
                     <a href="#">Minhas Vagas</a>
                 </li>
@@ -95,16 +95,16 @@
                         {% if user.is_superuser %}
                         <li><a href="{% url 'admin:index' %}">Admin</a></li>
                         {% endif %}
-                        {% if user.profile.EMPLOYEE %}
+                        {% if request.user.profile.kind == request.user.profile.EMPLOYEE %}
                         <li>
-                            <a href="{% url 'core:profile_save' request.user.id %}">
+                            <a href="{% url 'accounts:profile_address_save' %}">
                                 Perfil
                             </a>
                         </li>
                         {% endif %}
 
                         <!--<li><a href="#">Alterar Senha</a></li>-->
-                        <li role="separator" class="divider"></li>
+                        <!--<li role="separator" class="divider"></li>-->
                         <!--<li class="dropdown-header">Nav header</li>-->
 
                         <li>

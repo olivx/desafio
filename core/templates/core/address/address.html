@@ -1,0 +1,56 @@
+{% extends 'core/base.html'%}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="col-md-offset-2 col-md-8">
+    <form id="form_address" action="" method="post">
+        {% csrf_token %}
+
+        {% include 'core/messages.html'%}
+        <div class="modal-body">
+
+
+            <div id="form-group">
+                {% include 'core/address/address_form.html'%}
+            </div>
+
+
+        </div>
+
+
+    </form>
+</div>
+<div class="row">
+    <div class=" col-md-offset-2 col-md-8">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-block btn-default js-open-address-form"
+                    data-url="{% url 'core:address' company.id %}">
+                Limpar
+            </button>
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-block btn-primary js-save-address-form"
+                    data-url="{% url 'core:address_save' company.id %}">
+                Salvar
+            </button>
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-block btn-warning js-update-address-form"
+                    data-url="{% url 'core:address_update' company.id form.instance.id %}">
+                Alterar
+            </button>
+        </div>
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-block btn-danger js-delete-modal-address"
+                    data-url="{% url 'core:address_delete' company.id form.instance.id %}">
+                Deletar
+            </button>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

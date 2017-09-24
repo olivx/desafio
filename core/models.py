@@ -1,27 +1,15 @@
-from cuser.models import CUser as User
+# -*- coding: utf-8 -*-
 from django.db import models
+from cuser.models import CUser as User
 
 # Create your models here.
-from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, DEFAULT
-
-
-class Candidate(models.Model):
-    user = models.ForeignKey(User)
-    salario = models.DecimalField('Salario Pretenido', decimal_places=2, max_digits=10)
-    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=DEFAULT)
-    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=DEFAULT)
-
-    def __str__(self):
-        if self.user.get_full_name() == '':
-            return self.user.email
-        return self.user.email
-
-    class Meta:
-        verbose_name = 'Candidatos'
-        verbose_name_plural = 'Candidatos'
+from company.models import Company
 
 
 class Address(models.Model):
+
+    company = models.OneToOneField(Company, null=True, blank=True)
+    user = models.OneToOneField(User, null=True, blank=True)
     logradouro = models.CharField('Logradouro', max_length=50)
     endereco = models.CharField('Endereco', max_length=60)
     numero = models.PositiveIntegerField("Numero")
@@ -33,10 +21,10 @@ class Address(models.Model):
     observacao = models.TextField(null=True, blank=True)
     ativo = models.BooleanField(default=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return '{0} {1}, Numero {2}'.format(
             self.logradouro, self.endereco, self.numero
-        ).upper()
+        ).upper().encode('utf-8')
 
     class Meta:
         ordering = ['-id']

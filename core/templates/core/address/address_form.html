@@ -3,11 +3,12 @@
 <div class="row">
 
     <div class="col-md-8">
-        <div class="form-group {% if form.cliente.errors %} has-error {% endif %}" >
-            <label for="form.company.id_for_label ">{{ form.cliente.label  }}</label>
-            {% render_field form.cliente  class='form-control' disabled='True'%}
-            {% for error in form.cliente.errors %}
-            <span class="help-block">{{ error }}</span>
+        <div class="form-group {% if form.company.errors %} has-error {% endif %}" >
+            <label for="company_id">Empresa</label>
+            <input id="company_id" type="text" class="form-control upper"
+                   value="{{ company.name }}" disabled>
+            {% for error in form.company.errors %}
+            <span class="help-block ">{{ error }}</span>
             {% endfor %}
         </div>
     </div>
@@ -83,7 +84,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
 
         <div class="form-group {% if form.cidade.errors %} has-error {% endif %}" >
             <label for="form.cidade.id_for_label ">{{ form.cidade.label  }}</label>
@@ -96,7 +97,7 @@
     </div>
 
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="form-group {% if form.bairro.errors %} has-error {% endif %}" >
             <label for="form.bairro.id_for_label ">{{ form.bairro.label  }}</label>
             {% render_field form.bairro  class='form-control' %}
@@ -105,17 +106,6 @@
             {% endfor %}
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="form-group {% if form.tipo_end.errors %} has-error {% endif %}" >
-            <label for="form.bairro.id_for_label ">{{ form.tipo_end.label  }}</label>
-            {% render_field form.tipo_end  class='form-control' %}
-            {% for error in form.tipo_end.errors %}
-            <span class="help-block">{{ error }}</span>
-            {% endfor %}
-        </div>
-    </div>
-</div>
 
 
 <div class="row">

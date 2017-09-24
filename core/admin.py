@@ -1,11 +1,13 @@
 from django.contrib import admin
 
 # Register your models here.
-from core.forms import CandidateForm
-from core.models import Candidate
+from core.forms import AddressForm
+from core.models import Address
 
 
-@admin.register(Candidate)
-class CandidateAdmin(admin.ModelAdmin):
-    form = CandidateForm
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    form = AddressForm
+
+
 

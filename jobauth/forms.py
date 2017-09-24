@@ -1,7 +1,7 @@
 from django import forms
 from cuser.models import CUser
 from cuser.forms import UserCreationForm
-from jobauth.models import Profile
+from jobauth.models import Profile, Candidate
 
 
 class SignUpForm(UserCreationForm):
@@ -14,3 +14,11 @@ class SignUpForm(UserCreationForm):
         model = CUser
         fields = ('email', 'first_name', 'last_name', 'type',
                   'password1', 'password2',)
+
+
+
+
+class CandidateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ('last_job', 'salario', 'experiencia', 'escolaridade',)

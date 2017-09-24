@@ -133,6 +133,7 @@ $(function(){
         });
     return false;
     };
+
     function deleteCompanyForm(){
         var form = $(this);
         $.ajax({
@@ -173,120 +174,10 @@ $(function(){
     $('#company-modal').on('submit', '.js-company-form-delete', deleteCompanyForm);
 
 
-    // method end
-    function loadEnderecoForm(){
-        btn = $(this);
-
-        $.ajax({
-
-            url: btn.attr('data-url'),
-            type: 'get',
-            dataType: 'json',
-
-            beforeSend: function(){
-                $('#modal').modal('show');
-            },
-            success: function(data){
-                $('#modal .modal-content').html(data.html_form);
-
-                if(data.disable_all){
-
-                    $.each($('#modal input') , function(){
-                        $("#modal input").attr('disabled','disabled');
-                        $("#modal textarea").attr('disabled','disabled');
-                        $("#modal select").attr('disabled','disabled');
-                        $('input[name=csrfmiddlewaretoken]').removeAttr('disabled');
-                    });
-
-                }else{
-                    $.each($('#modal input') , function(){
-                        $("#modal input").removeAttr('disabled');
-                    });
-
-
-                }
-
-            }
-
-        });
-
-    };
-
-    function saveEndForm(){
-
-        // liberar para que o cliente seja enviado no form.
-        $("#id_cliente").removeAttr('disabled');
-        var form = $(this);
-        $.ajax({
-
-            dataType: 'json',
-            url: form.attr('action'),
-            data: form.serialize(),
-            type: form.attr('method'),
-
-            success: function(data){
-
-                if(data.is_form_valid){
-
-                    $('.messages').html(data.message)
-                    $('#address-table tbody').html(data.html_table);
-                    $('.pagination_end').html(data.html_pagination);
-                    $('#modal').modal('hide');
-
-                }else{
-
-                    $('#modal .modal-content').html(data.html_form);
-
-                }
-
-            }
-
-        });
-    return false;
-    };
-
-    //  abre o formulario de cadastro do endereço de cliente
-    $('.js-open-end-form').click(loadEnderecoForm );
-    $('#modal').on('submit', '.js-save-end-form', saveEndForm);
-
-    $('#address-table').on('click', '.js-open-end-form-update' , loadEnderecoForm );
-    $('#modal').on('submit' , '.js-update-end-form', saveEndForm)
-
-    $('#address-table').on('click', '.js-open-end-form-delete' , loadEnderecoForm );
-    $('#modal').on('submit' , '.js-delete-end-form', function(){
-
-        var form  = $(this);
-        $.ajax({
-
-            dataType: 'json',
-            data: form.serialize(),
-            url: form.attr('action'),
-            type: form.attr('method'),
-
-            beforeSend: function(){
-                var ask =  confirm('Deseja realmente desativar esse formulario ?')
-                if(ask  == false){
-                    return false;
-                }
-
-            },
-            success: function(data){
-
-                $('.messages').html(data.message)
-                $('#address-table tbody').html(data.html_table);
-                $('.pagination_end').html(data.html_pagination);
-
-                $('#modal').modal('hide');
-            }
-
-        });
-      return false;
-      });
-
-
+    // method address
 
     //  busca o cep pelo viaCep
-    $('#modal').on('click', '.search_cep' , function(){
+    $('.search_cep').click(function(){
 
         var cep =  $('.input_cep').val();
         cep  = cep.replace('-', '')
@@ -322,14 +213,66 @@ $(function(){
     });
 
     // limpa o modal de endereço
-    $('#modal').on('click', '.form_cleaned' , function(){
-             $.each($('#modal input'),function(){
+
+    $('.form_cleaned').click( function(){
+             $.each($('input'),function(){
                 $(this).val('');
             });
 
             $('textarea').val('');
 
     });
+
+    function submit_form_address(e){
+            e.preventDefault();
+            $("#company_id").removeAttr('disabled');
+            var url = $(this).attr('data-url')
+            $('#form_address').attr('action', url)
+            $('#form_address').submit()
+    };
+
+    // company  endereço methods
+    $('.js-open-address-form').click(submit_form_address);
+    $('.js-save-address-form').click(submit_form_address);
+    $('.js-update-address-form').click(submit_form_address);
+    $('.js-delete-modal-address').click(function(e){
+            e.preventDefault();
+
+            var con = confirm('Desejan realmente deletar esse endereço ?')
+            if(con == false){
+                return false;
+            }
+            $("#company_id").removeAttr('disabled');
+            var url = $(this).attr('data-url')
+            $('#form_address').attr('action', url)
+            $('#form_address').submit()
+    });
+
+
+    // profile send form
+
+       function submit_form_address_profile(e){
+            e.preventDefault();
+            var url = $(this).attr('data-url')
+            $('.form_address').attr('action', url)
+            $('.form_address').submit()
+    };
+
+       function submit_form_address_profile(e){
+            e.preventDefault();
+            var url = $(this).attr('data-url')
+            $('.form_candidate').attr('action', url)
+            $('.form_candidate').submit()
+    };
+
+
+    $('.js-send-form-address-update').click(submit_form_address_profile)
+    $('.js-send-form-address-delete').click(submit_form_address_profile)
+
+    $('.js-send-form-candidate-update').click(submit_form_address_profile)
+    $('.js-send-form-candidate-delete').click(submit_form_address_profile)
+
+
 
 
     $('#modal-group').on('shown.bs.modal', function(){

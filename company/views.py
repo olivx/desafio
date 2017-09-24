@@ -9,7 +9,7 @@ from company.services import view_service_save, view_service_delete
 from company.forms import CompanyForm, JobForm
 from company.models import Company, Job
 from jobauth.models import Profile
-from core.models import Candidate
+from jobauth.models import Candidate
 from core.utils import paginator
 
 

@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="row">
+
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+
+<div class="col-md-6">
+    <form class="form_address" action="" method="post">
+        {% csrf_token %}
+    {% include 'jobauth/form_address_profile.html' %}
+    </form>
+</div>
+
+<div class="col-md-6">
+    <form class="form_candidate" action="" method="post">
+        {% csrf_token %}
+    {% include 'jobauth/form_candidate.html' %}
+    </form>
+</div>
+
+<div class="row" style="margin-top:30em;">
+    <div class="col-md-12">
+
+
+        <div class="col-md-6 text-center">
+            <button class="btn btn-primary js-send-form-address-update"
+                    data-url="{% url 'accounts:profile_address_save' %}">
+                Salvar
+            </button>
+
+
+            <button class="btn btn-danger js-send-form-address-delete"
+                    data-url="{% url 'accounts:profile_address_delete' %}">
+                Deletar
+            </button >
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary js-send-form-candidate-update"
+                    data-url="{% url 'accounts:profile_candidate_save' %}">
+                Salvar
+            </button>
+
+        <button class="btn btn-danger js-send-form-candidate-delete"
+                data-url="{% url 'accounts:profile_candidate_delete' %}">
+                Deletar
+            </button >
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -10,8 +10,8 @@ class Company(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('Empresa', max_length=100)
 
-    def __str__(self):
-        return self.name.encode('utf-8')
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         ordering = ['-id']
@@ -34,7 +34,7 @@ class Job(models.Model):
         verbose_name = 'Vaga'
         verbose_name_plural = 'Vagas'
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
