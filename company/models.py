@@ -21,6 +21,7 @@ class Company(models.Model):
 
 class Job(models.Model):
     company = models.ForeignKey(Company)
+    users = models.ManyToManyField(User)
     name = models.CharField('Vaga', max_length=100)
     description = models.TextField('Description')
     salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
@@ -38,4 +39,4 @@ class Job(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return r('core:job_detail', pk=self.pk)
+        return r('company:job_detail', pk=self.pk)

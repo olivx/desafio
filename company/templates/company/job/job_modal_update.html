@@ -1,5 +1,5 @@
 {% load static %}
-<form action="{%  url 'core:job_update' form.instance.id %}"
+<form action="{%  url 'company:job_update' form.instance.id %}"
       class="js-update-job-form" method="post">
 
     {% csrf_token %}

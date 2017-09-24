@@ -23,14 +23,12 @@ def view_service_save(request, object, Form, klass, template_name, context_list,
     :return: json com is_form_valid , html_table,  html_form
     """
     data = {}
-    form = Form(request.POST or None, instance=object)
+    form = Form(request.user.id, request.POST or None, instance=object)
     if request.method == 'POST':
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
+            form.save(commit=False)
             data['is_form_valid'] = True
-            companies = paginator(request, klass.objects.filter(user__id=request.user.id))
+            companies = paginator(request, klass.objects.filter(company__user__id=request.user.id))
             data['html_table'] = \
                 render_to_string(template_table, {context_list: companies}, request=request)
 

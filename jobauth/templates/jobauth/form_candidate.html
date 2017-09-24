@@ -1,0 +1,35 @@
+{% load widget_tweaks %}
+
+
+<div class="form-group  {% if candidate_form.last_job.errors %} has-error {% endif %}">
+    {{ candidate_form.last_job.label_tag }}
+    {% render_field candidate_form.last_job class='form-control' rows='15'%}
+    {% for error in candidate_form.last_job.errors %}
+    <span class="help-block" > {{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="form-group  {% if candidate_form.escolaridade.errors %} has-error {% endif %}">
+    {{ candidate_form.escolaridade.label_tag }}
+    {% render_field candidate_form.escolaridade class='form-control'%}
+    {% for error in candidate_form.escolaridade.errors %}
+    <span class="help-block" > {{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="form-group  {% if candidate_form.salario.errors %} has-error {% endif %}">
+    {{ candidate_form.salario.label_tag }}
+    {% render_field candidate_form.salario class='form-control'%}
+    {% for error in candidate_form.salario.errors %}
+    <span class="help-block" > {{ error }}</span>
+    {% endfor %}
+</div>
+
+<div class="form-group  {% if candidate_form.experiencia.errors %} has-error {% endif %}">
+    {{ candidate_form.experiencia.label_tag }}
+    {% render_field candidate_form.experiencia class='form-control'%}
+    {% for error in candidate_form.experiencia.errors %}
+    <span class="help-block" > {{ error }}</span>
+    {% endfor %}
+</div>
+

@@ -1,44 +1,58 @@
-from django.shortcuts import resolve_url as r, render, get_object_or_404, redirect
+# -*- coding: utf-8 -*-
+from cuser.models import CUser as User
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.http import JsonResponse
 from django.db.models import Q
+from django.shortcuts import resolve_url as r, render, get_object_or_404, redirect
 
 # Create your views here.
-from company.services import view_service_save, view_service_delete
 from company.forms import CompanyForm, JobForm
 from company.models import Company, Job
-from jobauth.models import Profile
-from jobauth.models import Candidate
+from company.services import view_service_save, view_service_delete
 from core.utils import paginator
+from jobauth.models import Profile
 
 
-def job_list(request):
+def job_list(request, name):
     search = request.GET.get('search')
     if search is not None:
-        _list = Job.objects.filter(Q(name__icontains=search) | Q(company__name__icontains=search))
+        _list = Job.objects.filter(Q(name__icontains=search) |
+                                   Q(company__name__icontains=search))
     else:
-        _list = Job.objects.all()
+        if request.user.profile.kind == request.user.profile.COMPANY:
+            _list = Job.objects.filter(company__name__contains=name)
+        else:
+            _list = Job.objects.all()
     jobs = paginator(request=request, object_list=_list, por_page=5)
     return render(request, 'company/job/job_list.html', {'job_list': jobs})
 
 
 def job_detail(request, pk):
-    data = {}
     job = get_object_or_404(Job, pk=pk)
     form = JobForm(instance=job)
-    data['disable_all'] = True
-    data['html_form'] = \
-        render_to_string('company/job/job_detail.html', {'form': form}, request=request)
-    return JsonResponse(data)
+    return render(request, 'company/job/job_detail.html', {'form': form})
+
+
+def job_detail_list(request, job, userid):
+    users = User.objects.filter(job__id=job)
+    for o in users:
+        print User.objects.filter(id=User.objects.filter(id=o.id))
+
+    user_list = paginator(request, users)
+    return render(request, 'company/job/job_users_list.html', {'user_list': user_list})
 
 
 def job_candidate(request, job, user):
     job = get_object_or_404(Job, pk=job)
-    user = get_object_or_404(Candidate, pk=user)
+    user = get_object_or_404(User, pk=user)
     if request.method == 'POST':
-        job.candidates.add(user)
+        job.users.add(user)
         job.save()
+        message = u'parabens você abaca de se candidatar a essa vaga!'.encode('utf-8')
+        messages.success(request, message)
+
+    return render(request, 'company/job/job_detail.html',
+                  {'form': JobForm(instance=job)})
 
 
 @login_required(login_url='/accounts/login/')

@@ -1,6 +1,10 @@
 {% for company in company_list %}
 <tr>
-    <th class="upper" width="500"> {{ company  }}</th>
+    <th class="upper" width="500">
+        <a href="{% url 'company:job_list' company.name %}">
+        {{ company  }}
+        </a>
+    </th>
 
     <th  class="text-center upper" width="30">
         <a role="button" class="btn btn-primary "

@@ -1,16 +1,9 @@
-{% for job in job_list %}
+{% for job in user_list %}
 <tr>
     <th class="upper" width="500">
-
-        {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
-        <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
-            {{ job.name }}
+        </a>  <a href="{% url 'accounts:profile_detail' job.id %}">
+        {{  job.email  }}
         </a>
-        {% else %}
-        <a href="{% url 'company:job_detail' job.id %}">
-        {{ job.name }}
-        </a>
-        {% endif %}
     </th>
 
     {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
@@ -31,10 +24,6 @@
 </tr>
 <tr>
     {% empty %}
-    {% if user.is_authenticated and user.profile == user.profile.COMPANY%}
     <th colspan="3" class="bg-warning text-center">Nenhum resutado encontrado </th>
-    {% else %}
-    <th colspan="1" class="bg-warning text-center">Nenhum resutado encontrado </th>
-    {% endif %}
 </tr>
 {% endfor %}

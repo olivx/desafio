@@ -135,14 +135,14 @@ def profile_candidate_delete(request, template='jobauth/candidate_profile.html')
     return render(request, template, context)
 
 
-def profile(request):
-    if request.method == 'POST':
-        pass
-    else:
-        canidate = CandidateForm()
-        end_form = AddressForm()
-        context = {
-            'candidate_form': canidate,
-            'address_form': end_form
-        }
-    return render(request, 'jobauth/candidate_profile.html', context)
+def profile_detail(request, user, template='jobauth/candidate_profile.html'):
+    candidate = Candidate.objects.filter(user__id=user).first()
+    address = Address.objects.filter(user__id=user).first()
+    end_form = AddressForm(instance=address)
+    candidate_form = CandidateForm(instance=candidate)
+    context = {
+        'candidate_form': candidate_form,
+        'address_form': end_form
+    }
+    return render(request, template, context)
+

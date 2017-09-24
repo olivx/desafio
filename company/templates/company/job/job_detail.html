@@ -1,29 +1,30 @@
+{% include 'core/base.html' %}
 {% load static %}
-<form action="{% url '#" class="" method="post">
+
+{% block content %}
+<div class="container">
+
+    {% include 'core/messages.html' %}
+<form action="{% url 'company:job_candidate' form.instance.id request.user.id %}"
+      class="" method="post">
 
 
     {% csrf_token %}
-    <div class="modal-header">
-        <h4 class="modal-title">Vaga Info</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <h4 class="page-header text-info">Vaga Info</h4>
+    </button>
 
-    <div class="modal-body">
 
-        {% include 'core/job/job_form.html' %}
+    {% include 'company/job/job_form.html' %}
 
-    </div>
 
-    <div class="modal-footer">
-        {% if user.is_authenticated %}
-            {% if user.profile.kind == user.profile.EMPLOYEE %}
-        <button type="submit" class="btn btn-primary">
-            Deseja se Candidatar
-        </button>
-            {% endif %}
-        {% endif %}
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-    </div>
+
+    {% if user.is_authenticated %}
+    {% if user.profile.kind == user.profile.EMPLOYEE %}
+    <button type="submit" class="btn btn-block btn-primary">
+        Deseja se Candidatar
+    </button>
+    {% endif %}
+    {% endif %}
 </form>
+{% endblock %}
+</div>
