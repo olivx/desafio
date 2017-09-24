@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-
+from django.template.loader import render_to_string
+from django.conf import settings
 # Create your views here.
+from core.utils import distance
 from core.forms import AddressForm
 from core.models import Address
 from jobauth.forms import SignUpForm, CandidateForm
@@ -70,7 +73,7 @@ def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
         candidate_form = CandidateForm(request.POST, instance=candidate)
 
         if candidate_form.is_valid():
-            cand = end_form.save(commit=False)
+            cand = candidate_form.save(commit=False)
             cand.user = request.user
             cand.save()
             msg = u'Candidto cadastrado com sucesso'.encode('utf-8')
@@ -135,14 +138,22 @@ def profile_candidate_delete(request, template='jobauth/candidate_profile.html')
     return render(request, template, context)
 
 
-def profile_detail(request, user, template='jobauth/candidate_profile.html'):
+def profile_detail(request, user, template='jobauth/profile_modal.html'):
+    data = {}
     candidate = Candidate.objects.filter(user__id=user).first()
-    address = Address.objects.filter(user__id=user).first()
-    end_form = AddressForm(instance=address)
     candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
-        'address_form': end_form
     }
-    return render(request, template, context)
+    address_candidate = Address.objects.filter(user__id=user).first()
+    address_company = Address.objects.filter(company__user=request.user).first()
 
+    print address_company.get_full_address()
+    print address_candidate.get_full_address()
+    data['distancia'] = \
+        distance(origin=address_candidate.get_full_address(),
+                 destination=address_company.get_full_address(),
+                 api_key=settings.API_TOKEN)
+
+    data['html_form'] = render_to_string(template, context, request=request)
+    return JsonResponse(data)

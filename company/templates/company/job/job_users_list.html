@@ -1,5 +1,4 @@
 {% extends 'core/base.html' %}
-{% load i18n %}
 
 {% block  title %} FINDJOB Candidatos {% endblock %}
 
@@ -30,10 +29,11 @@
 
     <div class="col-md-offset-2 col-md-8">
 
-        <table id=" class="table table-striped table-hover table-condensed job-table">
+        <table id="candidato-table"
+               class="table table-striped table-hover table-condensed job-table">
         <thead>
         <tr>
-            <th width="500">Cadidatos</th>
+            <th width="500">CANDIDATOS</th>
 
             <th width="30">EDITAR</th>
             <th width="30">DELETAR</th>
@@ -74,13 +74,9 @@
     </div>
 
 
-
-
-    <div id="job-modal"   class="modal fade">
+    <div id="candidato-modal"   class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-
-
 
             </div><!-- content -->
         </div>
@@ -92,9 +88,4 @@
             crossorigin="anonymous">
     </script>
 
-    {% endblock %}
-
-
-    {% block java_script_app %}
-
-    {% endblock %}
+{% endblock content %}

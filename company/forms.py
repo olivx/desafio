@@ -10,11 +10,11 @@ class CompanyForm(forms.ModelForm):
 
 
 class JobForm(forms.ModelForm):
-    def __init__(self, user_id=0, *args, **kwargs):
-        super(JobForm, self).__init__(*args, **kwargs)
-        if user_id is not 0:
-            self.fields['company'].queryset =\
-                    Company.objects.filter(user_id=user_id)
+    # def __init__(self, user_id=0, *args, **kwargs):
+    #     super(JobForm, self).__init__(*args, **kwargs)
+    #     if user_id is not 0:
+    #         self.fields['company'].queryset =\
+    #                 Company.objects.filter(user_id=user_id)
 
 
     class Meta:

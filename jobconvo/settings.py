@@ -124,8 +124,8 @@ CUSER = {
     'register_proxy_auth_group_model': True,
 }
 
-
-
+# token api google maps matrix
+API_TOKEN = u'AIzaSyDUc-CSi4uBqAYiS29fYlVSzmHVWwYoFXc'.encode('utf-8')
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',

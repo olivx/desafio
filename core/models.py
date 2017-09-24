@@ -7,7 +7,6 @@ from company.models import Company
 
 
 class Address(models.Model):
-
     company = models.OneToOneField(Company, null=True, blank=True)
     user = models.OneToOneField(User, null=True, blank=True)
     logradouro = models.CharField('Logradouro', max_length=50)
@@ -25,6 +24,11 @@ class Address(models.Model):
         return '{0} {1}, Numero {2}'.format(
             self.logradouro, self.endereco, self.numero
         ).upper().encode('utf-8')
+
+    def get_full_address(self):
+        end = u'{0} {1} {2} {3} {4} {5}'.format(self.logradouro, self.endereco,
+                                          self.bairro, self.bairro, self.cidade, self.uf).encode('utf-8')
+        return end
 
     class Meta:
         ordering = ['-id']

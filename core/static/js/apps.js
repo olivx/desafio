@@ -110,6 +110,7 @@ $(function(){
             }
         });
     };
+
     function saveCompanyForm(){
         var form = $(this);
         $.ajax({
@@ -232,45 +233,126 @@ $(function(){
     };
 
     // company  endereço methods
-    $('.js-open-address-form').click(submit_form_address);
-    $('.js-save-address-form').click(submit_form_address);
-    $('.js-update-address-form').click(submit_form_address);
-    $('.js-delete-modal-address').click(function(e){
-            e.preventDefault();
-
-            var con = confirm('Desejan realmente deletar esse endereço ?')
-            if(con == false){
-                return false;
-            }
-            $("#company_id").removeAttr('disabled');
-            var url = $(this).attr('data-url')
-            $('#form_address').attr('action', url)
-            $('#form_address').submit()
-    });
+//    $('.js-open-address-form').click(submit_form_address);
+//    $('.js-save-address-form').click(submit_form_address);
+//    $('.js-update-address-form').click(submit_form_address);
+//    $('.js-delete-modal-address').click(function(e){
+//            e.preventDefault();
+//
+//            var con = confirm('Desejan realmente deletar esse endereço ?')
+//            if(con == false){
+//                return false;
+//            }
+//            $("#company_id").removeAttr('disabled');
+//            var url = $(this).attr('data-url')
+//            $('#form_address').attr('action', url)
+//            $('#form_address').submit()
+//    });
 
 
     // profile send form
 
-       function submit_form_address_profile(e){
+   function submit_form_address_profile(e){
             e.preventDefault();
             var url = $(this).attr('data-url')
             $('.form_address').attr('action', url)
             $('.form_address').submit()
     };
 
-       function submit_form_address_profile(e){
+   function submit_form_candidate_profile(e){
             e.preventDefault();
             var url = $(this).attr('data-url')
             $('.form_candidate').attr('action', url)
             $('.form_candidate').submit()
     };
-
-
-    $('.js-send-form-address-update').click(submit_form_address_profile)
+//
+//
+    $('.js-send-form-address-save').click(submit_form_address_profile)
     $('.js-send-form-address-delete').click(submit_form_address_profile)
 
-    $('.js-send-form-candidate-update').click(submit_form_address_profile)
-    $('.js-send-form-candidate-delete').click(submit_form_address_profile)
+    $('.js-send-form-candidate-save').click(submit_form_candidate_profile)
+    $('.js-send-form-candidate-delete').click(submit_form_candidate_profile)
+
+
+    //candidato
+    function loadCandidatoForm(){
+        var btn =  $(this);
+        $.ajax({
+            url:        btn.attr('data-url'),
+            type:       'GET',
+            dataType:   'json',
+
+            beforeSend: function(){
+                $('#candidato-modal').modal('show');
+            },
+            success: function(data){
+                $('#candidato-modal .modal-content').html(data.html_form);
+                if(data.disable_all){
+
+                    $('input').attr('disabled', 'disabled')
+                    $('textarea').attr('disabled', 'disabled')
+                    $('select').attr('disabled', 'disabled')
+                    $('#modal .btn-primary').attr('disabled', 'disabled')
+                    $('input[name=csrfmiddlewaretoken]').removeAttr('disabled')
+
+
+                }
+            }
+        });
+    };
+
+    function saveCompanyForm(){
+        var form = $(this);
+        $.ajax({
+            dataType: 'json',
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+
+            success: function(data){
+                if(data.is_form_valid){
+                     $('#company-table tbody').html(data.html_table);
+                    $('.messages').html(data.message);
+                    $('#company-modal').modal('hide');
+
+
+                }else{
+
+                    $('#company-modal .modal-content').html(data.html_form);
+                }
+            }
+        });
+    return false;
+    };
+
+    function deleteCompanyForm(){
+        var form = $(this);
+        $.ajax({
+
+            dataType:'json',
+            data: form.serialize(),
+            url: form.attr('action'),
+            type: 'post',
+
+            beforeSend: function(){
+                var x = confirm('Voce realmente deseja deletar essa Empresa ?')
+                if(x == false){
+                    return false;
+                }
+            },
+            success: function(data){
+                $('#company-table tbody').html(data.html_table);
+                $('.pagination').html(data.html_pagination)
+                $('#company-modal').modal('hide');
+                $('.messages').html(data.message);
+
+            }
+
+        });
+     return false;
+    };
+
+    $('#candidato-table').on('click', '.js-open-candidato-form-update', loadCandidatoForm);
 
 
 

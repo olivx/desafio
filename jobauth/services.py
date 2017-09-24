@@ -1,11 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render
 
-from core.forms import AddressForm
-from core.models import Address
-from jobauth.forms import CandidateForm
-from jobauth.models import Candidate
-
 
 def profile_save(request,obej_send, obje, Form_send, Form,
                  context_send, _context, msg_success,

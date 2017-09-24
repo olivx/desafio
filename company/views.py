@@ -13,20 +13,6 @@ from core.utils import paginator
 from jobauth.models import Profile
 
 
-def job_list(request, name):
-    search = request.GET.get('search')
-    if search is not None:
-        _list = Job.objects.filter(Q(name__icontains=search) |
-                                   Q(company__name__icontains=search))
-    else:
-        if request.user.profile.kind == request.user.profile.COMPANY:
-            _list = Job.objects.filter(company__name__contains=name)
-        else:
-            _list = Job.objects.all()
-    jobs = paginator(request=request, object_list=_list, por_page=5)
-    return render(request, 'company/job/job_list.html', {'job_list': jobs})
-
-
 def job_detail(request, pk):
     job = get_object_or_404(Job, pk=pk)
     form = JobForm(instance=job)
@@ -34,10 +20,7 @@ def job_detail(request, pk):
 
 
 def job_detail_list(request, job, userid):
-    users = User.objects.filter(job__id=job)
-    for o in users:
-        print User.objects.filter(id=User.objects.filter(id=o.id))
-
+    users = Job.objects.all()
     user_list = paginator(request, users)
     return render(request, 'company/job/job_users_list.html', {'user_list': user_list})
 
@@ -59,7 +42,7 @@ def job_candidate(request, job, user):
 def company_list(request):
     if request.user.profile.kind == Profile.EMPLOYEE:
         return redirect(r('company:job_list'))
-    companies = Company.objects.filter(user__id=request.user.id)
+    companies = Company.objects.all()
     companies = paginator(request=request, object_list=companies, por_page=5)
     context = {
         'company_list': companies,
@@ -98,6 +81,17 @@ def company_delete(request, pk):
                                template_table='company/company_table.html',
                                message_success=message_delete,
                                template_name='company/company_modal_delete.html')
+
+
+def job_list(request, name):
+    search = request.GET.get('search')
+    if search is not None:
+        _list = Job.objects.filter(Q(name__icontains=search) |
+                                   Q(company__name__icontains=search))
+    else:
+        _list = Job.objects.all()
+    jobs = paginator(request=request, object_list=_list, por_page=5)
+    return render(request, 'company/job/job_list.html', {'job_list': jobs})
 
 
 @login_required(login_url="/accounts/login")
