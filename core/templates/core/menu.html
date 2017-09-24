@@ -24,16 +24,17 @@
 
                 {% if user.is_authenticated %}
 
-                    {% if user.profile.kind == 2 %}
-                    <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
-                        <a href="#">Minhas Vagas</a>
-                    </li>
-                    {% else %}
+                {% if user.profile.kind == 2 %}
+                <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
+                    <a href="#">Minhas Vagas</a>
+                </li>
+                {% else %}
 
-                    <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
-                        <a href="#">Meus Cadidatos</a>
-                    </li>
-                    {% endif %}
+                <li class="{% if  request.resolver_match.url_name == 'company_list'  %} active {% endif %}">
+                    <a href="{% url 'company:company_list' %}">Minhas Empresas</a>
+                </li>
+
+                {% endif %}
                 {% endif %}
 
 
@@ -94,11 +95,13 @@
                         {% if user.is_superuser %}
                         <li><a href="{% url 'admin:index' %}">Admin</a></li>
                         {% endif %}
+                        {% if user.profile.EMPLOYEE %}
                         <li>
                             <a href="{% url 'core:profile_save' request.user.id %}">
                                 Perfil
                             </a>
                         </li>
+                        {% endif %}
 
                         <!--<li><a href="#">Alterar Senha</a></li>-->
                         <li role="separator" class="divider"></li>

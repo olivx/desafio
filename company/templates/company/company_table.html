@@ -3,15 +3,22 @@
     <th class="upper" width="500"> {{ company  }}</th>
 
     <th  class="text-center upper" width="30">
+        <button class="btn btn-primary"
+                data-url="#">
+            <i class="glyphicon glyphicon-map-marker"></i>
+        </button>
+    </th>
+
+    <th  class="text-center upper" width="30">
         <button class="btn btn-warning js-open-company-form-update"
-                data-url="{% url 'core:company_update' company.id %}">
+                data-url="{% url 'company:company_update' company.id %}">
             <i class="glyphicon glyphicon-pencil"></i>
         </button>
     </th>
 
     <th  class="text-center upper" width="30">
         <button class="btn btn-danger js-open-company-form-delete"
-                data-url="{% url 'core:company_delete' company.id %}">
+                data-url="{% url 'company:company_delete' company.id %}">
             <i class="glyphicon glyphicon-trash"></i>
         </button>
     </th>

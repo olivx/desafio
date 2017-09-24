@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     # my apps
     'core',
     'jobauth',
+    'company',
 
     # third part
     'cuser',

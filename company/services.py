@@ -6,9 +6,9 @@ from core.utils import paginator
 
 
 def view_service_save(request, object, Form, klass, template_name, context_list,
-                 template_table, message_success, message_type='success', message_error=
-                 'Foi encontrado algo errado no processo, corrija os erros a '
-                 'baixo no formulario e tente novamente'):
+                      template_table, message_success, message_type='success', message_error=
+                      'Foi encontrado algo errado no processo, corrija os erros a '
+                      'baixo no formulario e tente novamente'):
     """
     :param request: 
     :param object: objeto que sera usado , company, job  
@@ -26,9 +26,11 @@ def view_service_save(request, object, Form, klass, template_name, context_list,
     form = Form(request.POST or None, instance=object)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             data['is_form_valid'] = True
-            companies = paginator(request, klass.objects.all())
+            companies = paginator(request, klass.objects.filter(user__id=request.user.id))
             data['html_table'] = \
                 render_to_string(template_table, {context_list: companies}, request=request)
 
@@ -54,7 +56,7 @@ def view_service_save(request, object, Form, klass, template_name, context_list,
 
 
 def view_service_delete(request, object, Form, klass, template_name, context_list,
-                 template_table, message_success):
+                        template_table, message_success):
     """
     :param request: 
     :param object: objeto que sera usado , company, job  

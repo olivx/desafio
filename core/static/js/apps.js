@@ -120,8 +120,7 @@ $(function(){
 
             success: function(data){
                 if(data.is_form_valid){
-                    $('#table-company tbody').html(data.html_table);
-//                    $('#client-form').html(data.html_form);
+                     $('#company-table tbody').html(data.html_table);
                     $('.messages').html(data.message);
                     $('#company-modal').modal('hide');
 

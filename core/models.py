@@ -1,49 +1,8 @@
-from django.db import models
 from cuser.models import CUser as User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.shortcuts import resolve_url as r
-from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, SEIS_MESES, DEFAULT
-
+from django.db import models
 
 # Create your models here.
-
-class Company(models.Model):
-    name = models.CharField('Empresa', max_length=100)
-
-    # address = models.OneToOneField('Address')
-
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['-id']
-        verbose_name = 'Empresa'
-        verbose_name_plural = 'Empresas'
-
-
-class Job(models.Model):
-    company = models.ForeignKey(Company)
-    candidates = models.ManyToManyField('Candidate')
-    name = models.CharField('Vaga', max_length=100)
-    description = models.TextField('Description')
-    salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)
-    salario_max = models.DecimalField('Salario Max', max_digits=10, decimal_places=2)
-    experiencia = models.PositiveIntegerField('Experiencia', choices=LIST_EXPERIENCIA, default=DEFAULT)
-    escolaridade = models.PositiveIntegerField('Escolaridade', choices=LIST_ESCOLARIDADE, default=DEFAULT)
-    distancia_max = models.IntegerField('D. Maxima')
-
-    class Meta:
-        ordering = ['-id']
-        verbose_name = 'Vaga'
-        verbose_name_plural = 'Vagas'
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return r('core:job_detail', pk=self.pk)
+from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, DEFAULT
 
 
 class Candidate(models.Model):
@@ -60,13 +19,6 @@ class Candidate(models.Model):
     class Meta:
         verbose_name = 'Candidatos'
         verbose_name_plural = 'Candidatos'
-
-
-@receiver(post_save, sender=User)
-def create_or_update_candidate(sender, instance, created, **kwargs):
-    if created:
-        Candidate.objects.create(user=instance)
-    instance.candidate.save()
 
 
 class Address(models.Model):

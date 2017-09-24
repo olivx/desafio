@@ -19,7 +19,7 @@
                 {% for field in form %}
                 <div class="form-group {% if field.errors %} has-error {% endif %}">
                     {{ field.label_tag }}
-                    {% render_field field class="form-control" %}<br>
+                    {% render_field field class="form-control upper" %}<br>
 
                     {% if field.help_text %}
                     <small style="color: grey">{{ field.help_text }}</small>

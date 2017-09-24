@@ -1,10 +1,10 @@
 {% load static %}
-<form action="{%  url 'core:job_delete' form.instance.id %}"
-      class="js-delete-job-form" method="post">
+<form action="{%  url 'company:company_delete' form.instance.id %}"
+      class="js-company-form-delete" method="post">
 
     {% csrf_token %}
     <div class="modal-header">
-        <h4 class="modal-title">Deletar Vaga</h4>
+        <h4 class="modal-title">ADD Compania</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -13,7 +13,8 @@
     <div class="modal-body">
 
         {% include 'core/messages.html' %}
-        {% include 'core/job/job_form.html' %}
+
+        {% include 'company/company_form.html' %}
 
     </div>
 

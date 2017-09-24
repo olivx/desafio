@@ -1,0 +1,29 @@
+{% for job in job_list %}
+<tr>
+    <th class="upper" width="500">{{ job.name }}</th>
+
+    {% if user.is_authenticated and user.profile == user.profile.COMPANY %}
+    <th  class="text-center upper" width="30">
+        <button class="btn btn-warning js-open-job-form-update"
+                data-url="{% url 'company:job_update' job.id %}">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </button>
+    </th>
+
+    <th  class="text-center upper" width="30">
+        <button class="btn btn-danger js-open-job-form-delete"
+                data-url="{% url 'company:job_delete' job.id %}">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </th>
+    {% endif %}
+</tr>
+<tr>
+    {% empty %}
+    {% if user.is_authenticated and user.profile == user.profile.COMPANY%}
+        <th colspan="3" class="bg-warning text-center">Nenhum resutado encontrado </th>
+    {% else %}
+        <th colspan="1" class="bg-warning text-center">Nenhum resutado encontrado </th>
+    {% endif %}
+</tr>
+{% endfor %}

@@ -1,14 +1,14 @@
-from cuser.forms import AuthenticationForm
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.views import login, logout
+
 from core.views import home
 
 urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', home, name='home'),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^core/', include('core.urls', namespace='core')),
+    url(r'^company/', include('company.urls', namespace='company')),
     url(r'^accounts/', include('jobauth.urls', namespace='accounts')),
-    url(r'^job/', include('core.urls', namespace='core')),
 
 ]
