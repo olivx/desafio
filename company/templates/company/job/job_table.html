@@ -6,9 +6,8 @@
             {{ job.name }}
         </a>
     </th>
-    <th class="upper">
-        {{ job.company }}
-    </th>
+    <!--<th class="upper">-->
+    <!--</th>-->
 
     {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
     <th  class="text-center upper" width="30">

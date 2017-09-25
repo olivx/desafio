@@ -39,6 +39,15 @@ O que será considerado
     Se tiver TDD melhor ainda
     Se tiver BDD melhor também
 
-Prazo de entrega
 
-Favor entregar até Sexta-feira 22/09/17 às 18:00 para regis@jobconvo.com apenas o link do GitHub e as instruções.
+# Rodando o projeto
+```
+git clone git@github.com:olivx/desafio.git project 
+cd project 
+pyenv local system 
+virtualenv .venv 
+source .venv/bin/activate 
+pip install -r riqueriments.tx 
+python manage.py migrate 
+
+```

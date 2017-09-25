@@ -32,7 +32,7 @@ $(function(){
             success: function(data){
                 if(data.is_form_valid){
 
-                    $('#job-table tbody').html(data.html_table);
+                    $('.job-table tbody').html(data.html_table);
                     $('.messages').html(data.message)
                     $('#job-modal').modal('hide');
 
@@ -232,22 +232,22 @@ $(function(){
             $('#form_address').submit()
     };
 
-    // company  endereço methods
-//    $('.js-open-address-form').click(submit_form_address);
-//    $('.js-save-address-form').click(submit_form_address);
-//    $('.js-update-address-form').click(submit_form_address);
-//    $('.js-delete-modal-address').click(function(e){
-//            e.preventDefault();
-//
-//            var con = confirm('Desejan realmente deletar esse endereço ?')
-//            if(con == false){
-//                return false;
-//            }
-//            $("#company_id").removeAttr('disabled');
-//            var url = $(this).attr('data-url')
-//            $('#form_address').attr('action', url)
-//            $('#form_address').submit()
-//    });
+     //company  endereço methods
+    $('.js-open-address-form').click(submit_form_address);
+    $('.js-save-address-form').click(submit_form_address);
+    $('.js-update-address-form').click(submit_form_address);
+    $('.js-delete-modal-address').click(function(e){
+            e.preventDefault();
+
+            var con = confirm('Desejan realmente deletar esse endereço ?')
+            if(con == false){
+                return false;
+            }
+            $("#company_id").removeAttr('disabled');
+            var url = $(this).attr('data-url')
+            $('#form_address').attr('action', url)
+            $('#form_address').submit()
+    });
 
 
     // profile send form
@@ -388,6 +388,27 @@ $(function(){
         });
     });
 
+
+
+
+     $('a ').on('click ', '.profile-detail',  function(e){
+            e.preventDefault();
+            var a = $(this)
+
+            $.ajax({
+            url:        a.attr('href'),
+            type:       'GET',
+            dataType:   'json',
+
+            success: function(data){
+                alert('fufo')
+                $('.profile').html(data.html_form);
+            }
+        });
+
+
+
+    });
 
 
 });

@@ -22,15 +22,17 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.profile.kind = form.cleaned_data.get('type')
+            user.save()
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=email, password=raw_password)
+            user = authenticate(username=email, password=raw_password)
             login(request, user)
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'jobauth/signup.html', {'form': form})
 
 
 def profile_address_save(request, template='jobauth/candidate_profile.html'):
@@ -148,11 +150,9 @@ def profile_detail(request, user, template='jobauth/profile_modal.html'):
     address_candidate = Address.objects.filter(user__id=user).first()
     address_company = Address.objects.filter(company__user=request.user).first()
 
-    print address_company.get_full_address()
-    print address_candidate.get_full_address()
     data['distancia'] = \
-        distance(origin=address_candidate.get_full_address(),
-                 destination=address_company.get_full_address(),
+        distance(origin=address_candidate,
+                 destination=address_company,
                  api_key=settings.API_TOKEN)
 
     data['html_form'] = render_to_string(template, context, request=request)

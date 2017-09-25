@@ -20,8 +20,8 @@ class Company(models.Model):
 
 
 class Job(models.Model):
-    company = models.ForeignKey(Company)
     users = models.ManyToManyField(User)
+    company = models.ForeignKey(Company, null=True, blank=True)
     name = models.CharField('Vaga', max_length=100)
     description = models.TextField('Description')
     salario_min = models.DecimalField('Salario Minimo', max_digits=10, decimal_places=2)

@@ -1,29 +1,24 @@
 {% for user in user_list %}
 <tr>
-    <th class="upper" width="500">
-        </a>  <a href="{% url 'accounts:profile_detail' user.id %}">
+    <th class="upper profile-detail" width="500">
+        <a class="profile-detail" href="{% url 'accounts:profile_detail' user.id %}">
         {{  user  }}
     </a>
     </th>
-</tr>
-<tr>
     <th  class="text-center upper" width="30">
         <button class="btn btn-warning js-open-candidato-form-update"
                 data-url="{% url 'accounts:profile_detail' user.id %}">
             <i class="glyphicon glyphicon-pencil"></i>
         </button>
     </th>
-</tr>
-<tr>
     <th  class="text-center upper" width="30">
         <button class="btn btn-danger js-open-cadidato-form-delete"
                 data-url="{% url 'company:job_delete' user.id %}">
             <i class="glyphicon glyphicon-trash"></i>
         </button>
     </th>
-</tr>
 
-{% empty %}
+    {% empty %}
 <tr>
     <th colspan="3" class="bg-warning text-center">Nenhum resultado encontrado </th>
 </tr>

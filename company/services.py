@@ -2,6 +2,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib import messages
 
+from company.models import Company
 from core.utils import paginator
 
 
@@ -26,10 +27,12 @@ def view_service_save(request, object, Form, klass, template_name, context_list,
     form = Form(request.POST or None, instance=object)
     if request.method == 'POST':
         if form.is_valid():
-            form.save(commit=False)
-
+            obj = form.save(commit=False)
+            if not isinstance(object,Company):
+                obj.user = request.user
+            obj.save()
             data['is_form_valid'] = True
-            companies = paginator(request, klass.objects.filter(company__user__id=request.user.id))
+            companies = paginator(request, klass.objects.all())
             data['html_table'] = \
                 render_to_string(template_table, {context_list: companies}, request=request)
 

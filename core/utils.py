@@ -60,6 +60,6 @@ def distance(origin, destination, api_key):
     if response.json()['destination_addresses'] == ['']:
         retorno = 'Nao encontrado'
     else:
-        retorno = response.json()['rows'][0]['elements'][0]['distance']['value']
+         retorno = response.json()# ['rows'][0]['elements'][0]['distance']['value']
 
     return retorno

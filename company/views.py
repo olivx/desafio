@@ -24,7 +24,7 @@ def job_detail_list(request, job, userid):
     user_list = paginator(request, users)
     return render(request, 'company/job/job_users_list.html', {'user_list': user_list})
 
-
+@login_required(login_url='/accounts/login/')
 def job_candidate(request, job, user):
     job = get_object_or_404(Job, pk=job)
     user = get_object_or_404(User, pk=user)
@@ -41,7 +41,7 @@ def job_candidate(request, job, user):
 @login_required(login_url='/accounts/login/')
 def company_list(request):
     if request.user.profile.kind == Profile.EMPLOYEE:
-        return redirect(r('company:job_list'))
+        return redirect(r('company:job_list',name=None))
     companies = Company.objects.all()
     companies = paginator(request=request, object_list=companies, por_page=5)
     context = {

@@ -7,7 +7,6 @@ urlpatterns = [
     url(r'company/update/(?P<pk>\d+)/$', company_views.company_update, name='company_update'),
     url(r'company/delete/(?P<pk>\d+)/$', company_views.company_delete, name='company_delete'),
 
-    # url(r'job/list/', company_views.job_list, name='job_list'),
     url(r'job/list/(?P<name>\w+)', company_views.job_list, name='job_list'),
     url(r'job/save/$', company_views.job_save, name='job_save'),
     url(r'job/detail/(?P<pk>\d+)/$', company_views.job_detail, name='job_detail'),

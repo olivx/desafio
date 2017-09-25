@@ -21,14 +21,10 @@ class Address(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return '{0} {1}, Numero {2}'.format(
-            self.logradouro, self.endereco, self.numero
-        ).upper().encode('utf-8')
-
-    def get_full_address(self):
-        end = u'{0} {1} {2} {3} {4} {5}'.format(self.logradouro, self.endereco,
-                                          self.bairro, self.bairro, self.cidade, self.uf).encode('utf-8')
-        return end
+        return u'{0} {1} {2} {3} {4} {5}'\
+            .format(self.logradouro, self.endereco,
+                    self.bairro, self.bairro, self.cidade, self.uf)\
+            .encode('utf-8')
 
     class Meta:
         ordering = ['-id']
