@@ -15,7 +15,7 @@
 
     {% if user.is_authenticated and user.profile.kind == user.profile.EMPLOYEE %}
     <th  class="text-center upper" width="30">
-        <button class="btn btn-info js-open-job-form" title="Detalhes da Vaga"
+        <button class="btn btn-info js-open-job-form-detail" title="Detalhes da Vaga"
                 data-url="{% url 'company:job_detail' job.id %}">
             <i class="glyphicon glyphicon-sunglasses"></i>
         </button>

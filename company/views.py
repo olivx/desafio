@@ -17,6 +17,13 @@ from jobauth.models import Profile
 
 @login_required(login_url='/accounts/login/')
 def job_candidate(request, job, user):
+    if request.user.is_authenticadated:
+        messages.info(request, 'Vocé deve fazer o login no site para poder se cadastrar as vagas!')
+        return redirect(r('company:job_list'))
+
+    # usuario precisa ter um endereço para fazer o cadastro no site.
+
+
     job = get_object_or_404(Job, pk=job)
     user = get_object_or_404(User, pk=user)
     if request.method == 'POST':
@@ -25,8 +32,12 @@ def job_candidate(request, job, user):
         message = u'parabens você abaca de se candidatar a essa vaga!'.encode('utf-8')
         messages.success(request, message)
 
-    return render(request, 'company/job/job_detail.html',
-                  {'form': JobForm(instance=job)})
+    _list = Job.objects.all()
+    jobs = paginator(request=request, object_list=_list, por_page=5)
+    context = {
+        'job_list': jobs
+    }
+    return render(request, 'company/job/job_list.html', context)
 
 
 @login_required(login_url='/accounts/login/')
@@ -75,16 +86,10 @@ def company_delete(request, pk):
                                template_name='company/company_modal_delete.html')
 
 
-def _job_detail(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    form = JobForm(instance=job,company=job.company)
-    return render(request, 'company/job/job_detail.html', {'form': form, 'company': job.company})
-
-
 def job_detail(request, pk):
     data = {}
     job = get_object_or_404(Job, pk=pk)
-    form = JobForm(instance=job,company=job.company)
+    form = JobForm(instance=job, company=job.company)
     context = {'form': form, 'company': job.company}
     data['disable_all'] = True
     data['html_form'] = render_to_string('company/job/job_detail.html', context, request=request)

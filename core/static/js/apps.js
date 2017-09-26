@@ -83,8 +83,12 @@ $(function(){
     $('.job-table').on('click','button', loadJobForm);
     $('#job-modal').on('submit', '.js-update-job-form', saveJobForm);
 
+    // delete job
     $('#job-modal').on('submit', '.js-delete-job-form', deleteJobForm);
 
+
+    // detail job
+     $('.js-open-job-form-detail').click(loadJobForm);
 
 
 
@@ -264,19 +268,29 @@ $(function(){
             $('.form_address').submit()
     };
 
-   function submit_form_candidate_profile(e){
+   function submit_form_candidate_save(e){
             e.preventDefault();
             var url = $(this).attr('data-url')
             $('.form_candidate').attr('action', url)
             $('.form_candidate').submit()
     };
-//
-//
+
+    function submit_form_candidate_delete(e){
+            var c = confirm('Deseja realmente deletar essas informações ?')
+
+            if(c == true){
+                e.preventDefault();
+                var url = $(this).attr('data-url')
+                $('.form_candidate').attr('action', url)
+                $('.form_candidate').submit()
+            }
+    };
+
     $('.js-send-form-address-save').click(submit_form_address_profile)
     $('.js-send-form-address-delete').click(submit_form_address_profile)
 
-    $('.js-send-form-candidate-save').click(submit_form_candidate_profile)
-    $('.js-send-form-candidate-delete').click(submit_form_candidate_profile)
+    $('.js-send-form-candidate-save').click(submit_form_candidate_save)
+    $('.js-send-form-candidate-delete').click(submit_form_candidate_delete)
 
 
     //candidato

@@ -67,13 +67,10 @@ def profile_address_save(request, template='jobauth/candidate_profile.html'):
     return render(request, template, context)
 
 
-def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
+def candidate_save(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
-    address = Address.objects.filter(user__id=request.user.id).first()
     if request.method == 'POST':
-        end_form = AddressFormPerfil()
         candidate_form = CandidateForm(request.POST, instance=candidate)
-
         if candidate_form.is_valid():
             cand = candidate_form.save(commit=False)
             cand.user = request.user
@@ -86,15 +83,27 @@ def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
             messages.error(request, msf_error)
             context = {
                 'candidate_form': candidate_form,
-                'address_form': end_form
             }
             return render(request, template, context)
     else:
-        end_form = AddressFormPerfil(instance=address)
         candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
-        'address_form': end_form
+    }
+    return render(request, template, context)
+
+
+def candidate_delete(request, template='jobauth/candidate_profile.html'):
+    candidate = Candidate.objects.filter(user__id=request.user.id).first()
+    if request.method == 'POST':
+        if candidate is not None:
+            candidate.delete()
+            msg = u'Informações deletadas com sucesso.'.encode('utf-8')
+        else:
+            msg = u'Não há informações a serem deletadas.'.encode('utf-8')
+        messages.error(request, msg)
+    context = {
+        'candidate_form': CandidateForm()
     }
     return render(request, template, context)
 
@@ -112,27 +121,6 @@ def profile_address_delete(request, template='jobauth/candidate_profile.html'):
         else:
             msf_error = u'Formulario com seu endereço não é valido'.encode('utf-8')
             messages.error(request, msf_error)
-    context = {
-        'address_form': address_form,
-        'candidate_form': candidate_form
-    }
-    return render(request, template, context)
-
-
-def profile_candidate_delete(request, template='jobauth/candidate_profile.html'):
-    address = Address.objects.filter(user__id=request.user.id).first()
-    candidate = Candidate.objects.filter(user__id=request.user.id).first()
-    address_form = AddressFormPerfil(instance=candidate)
-    candidate_form = CandidateForm(instance=address)
-    if request.method == 'POST':
-        if address_form.is_valid():
-            candidate.delete()
-            msg = u'Profile deletado com sucesso'.encode('utf-8')
-            messages.error(request, msg)
-        else:
-            msf_error = u'Formulario com suas experiencias não é valido'.encode('utf-8')
-            messages.error(request, msf_error)
-
     context = {
         'address_form': address_form,
         'candidate_form': candidate_form
