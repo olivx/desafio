@@ -1,9 +1,14 @@
 {% for job in job_list %}
 <tr>
     <th class="upper" width="500">
-
         <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
             {{ job.name }}
+        </a>
+    </th>
+    <th class="upper" width="500">
+
+        <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
+            {{ job.company}}
         </a>
     </th>
     <!--<th class="upper">-->
@@ -27,6 +32,6 @@
 </tr>
 <tr>
     {% empty %}
-    <th colspan="3" class="bg-warning text-center">Nenhum resutado encontrado </th>
+    <th colspan="4" class="bg-warning text-center">Nenhum resutado encontrado </th>
 </tr>
 {% endfor %}

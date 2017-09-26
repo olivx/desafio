@@ -41,7 +41,7 @@ def job_candidate(request, job, user):
 @login_required(login_url='/accounts/login/')
 def company_list(request):
     if request.user.profile.kind == Profile.EMPLOYEE:
-        return redirect(r('company:job_list',name=None))
+        return redirect(r('company:job_list'))
     companies = Company.objects.all()
     companies = paginator(request=request, object_list=companies, por_page=5)
     context = {
@@ -82,16 +82,42 @@ def company_delete(request, pk):
                                message_success=message_delete,
                                template_name='company/company_modal_delete.html')
 
-
-def job_list(request, name):
+@login_required(login_url="/accounts/login")
+def job_list_company(request, pk):
     search = request.GET.get('search')
+    company = get_object_or_404(Company, pk=pk)
+
+    if company.address is None:
+        messages.warning(request,'você precisa cadastrar o endereço da Empresa antes de cadastrar a vaga!')
+        return render(request, 'company/job/job_list.html', )
+
     if search is not None:
-        _list = Job.objects.filter(Q(name__icontains=search) |
-                                   Q(company__name__icontains=search))
+        _list = Job.objects.filter(Q(company_id=pk), Q(company__name__icontains=search))
+    else:
+        _list = Job.objects.filter(company_id=pk)
+    jobs = paginator(request=request, object_list=_list, por_page=5)
+
+    context = {
+        'job_list': jobs
+    }
+
+    return render(request, 'company/job/job_list.html', context)
+
+
+def job_list(request):
+    search = request.GET.get('search')
+
+    if search is not None:
+        _list = Job.objects.filter(Q(company__name__icontains=search))
     else:
         _list = Job.objects.all()
     jobs = paginator(request=request, object_list=_list, por_page=5)
-    return render(request, 'company/job/job_list.html', {'job_list': jobs})
+
+    context = {
+        'job_list': jobs
+    }
+
+    return render(request, 'company/job/job_list.html', context)
 
 
 @login_required(login_url="/accounts/login")

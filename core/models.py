@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from cuser.models import CUser as User
-
 # Create your models here.
-from company.models import Company
+
 
 
 class Address(models.Model):
-    company = models.OneToOneField(Company, null=True, blank=True)
     user = models.OneToOneField(User, null=True, blank=True)
     logradouro = models.CharField('Logradouro', max_length=50)
     endereco = models.CharField('Endereco', max_length=60)

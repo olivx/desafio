@@ -3,12 +3,14 @@ from cuser.models import CUser as User
 from django.shortcuts import resolve_url as r
 
 # Create your models here.
+from core.models import Address
 from core.utils import LIST_EXPERIENCIA, LIST_ESCOLARIDADE, DEFAULT
 
 
 class Company(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('Empresa', max_length=100)
+    address = models.OneToOneField(Address, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -17,7 +19,6 @@ class Company(models.Model):
         ordering = ['-id']
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
-
 
 class Job(models.Model):
     users = models.ManyToManyField(User)

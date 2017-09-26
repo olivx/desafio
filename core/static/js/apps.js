@@ -225,8 +225,8 @@ $(function(){
     });
 
     function submit_form_address(e){
-            e.preventDefault();
             $("#company_id").removeAttr('disabled');
+            e.preventDefault();
             var url = $(this).attr('data-url')
             $('#form_address').attr('action', url)
             $('#form_address').submit()
@@ -391,7 +391,7 @@ $(function(){
 
 
 
-     $('a ').on('click ', '.profile-detail',  function(e){
+     $('#profile-detail').click(function(e){
             e.preventDefault();
             var a = $(this)
 
@@ -400,9 +400,15 @@ $(function(){
             type:       'GET',
             dataType:   'json',
 
+            beforeSend: function(){
+
+                $('#candidato-modal').modal('show')
+
+            },
+
             success: function(data){
-                alert('fufo')
-                $('.profile').html(data.html_form);
+                $('#candidato-modal .modal-content').html(data.html_form);
+                $('#candidato-modal .modal-content .distancia .status').html(data.distancia.status);
             }
         });
 

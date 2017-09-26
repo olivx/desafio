@@ -1,7 +1,7 @@
 {% for user in user_list %}
 <tr>
-    <th class="upper profile-detail" width="500">
-        <a class="profile-detail" href="{% url 'accounts:profile_detail' user.id %}">
+    <th  width="500">
+        <a class="upper" href="{% url 'accounts:profile_detail' user.id %}">
         {{  user  }}
     </a>
     </th>
