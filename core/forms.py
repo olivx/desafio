@@ -4,10 +4,10 @@ from django import forms
 from core.models import Address
 
 
-class AddressForm(forms.ModelForm):
+class AddressFormCompany(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         company = kwargs.pop('company')
-        super(AddressForm, self).__init__(*args, **kwargs)
+        super(AddressFormCompany, self).__init__(*args, **kwargs)
         self.fields['company'].initial = company
 
     company = forms.CharField(widget=forms.TextInput)
@@ -16,3 +16,10 @@ class AddressForm(forms.ModelForm):
         model = Address
         fields = ('cep', 'endereco', 'numero', 'complemento',
                   'bairro', 'cidade', 'uf', 'observacao',)
+
+class AddressFormPerfil(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ('cep', 'endereco', 'numero', 'complemento',
+                  'bairro', 'cidade', 'uf', 'observacao',)
+

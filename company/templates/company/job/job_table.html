@@ -7,7 +7,7 @@
         </a>
     </th>
 
-    <th class="upper" width="250">
+    <th class="upper" width="400">
         <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
             {{ job.name }}
         </a>
@@ -15,14 +15,14 @@
 
     {% if user.is_authenticated and user.profile.kind == user.profile.EMPLOYEE %}
     <th  class="text-center upper" width="30">
-        <button class="btn btn-info js-open-job-form-update" title="Detalhes da Vaga"
-                data-url="{% url 'company:job_update' job.id %}">
+        <button class="btn btn-info js-open-job-form" title="Detalhes da Vaga"
+                data-url="{% url 'company:job_detail' job.id %}">
             <i class="glyphicon glyphicon-sunglasses"></i>
         </button>
     </th>
 
     <th  class="text-center upper" width="30">
-        <button class="btn btn-success js-open-job-form-delete" title="Deseja Se Candidatar a Vaga ?"
+        <button class="btn btn-success js-open-job-form-se-cadastrar" title="Deseja Se Candidatar a Vaga ?"
                 data-url="{% url 'company:job_delete' job.id %}">
             <i class="glyphicon glyphicon-thumbs-up"></i>
         </button>

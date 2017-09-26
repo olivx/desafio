@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, resolve_url as r, redire
 
 # Create your views here.
 from company.models import Company
-from core.forms import AddressForm
+from core.forms import AddressFormCompany
 from core.models import Address
 
 
@@ -15,7 +15,7 @@ def home(request):
 def address(request, company_id):
     company = get_object_or_404(Company, pk=company_id)
     address = Address.objects.filter(company__id=company_id).first()
-    form = AddressForm(company=company.name, instance=address)
+    form = AddressFormCompany(company=company.name, instance=address)
     context = {
         'company': company,
         'form': form
@@ -25,7 +25,7 @@ def address(request, company_id):
 
 def address_save(request, company_id, template='core/address/address.html'):
     company = Company.objects.get(pk=company_id)
-    form = AddressForm(request.POST or None, company=company.name)
+    form = AddressFormCompany(request.POST or None, company=company.name)
     if request.method == 'POST':
         # print form
         if form.is_valid():
@@ -49,7 +49,7 @@ def address_update(request, company_id, address_id, template='core/address/addre
     _address = Address.objects.get(pk=address_id)
     company = Company.objects.get(pk=company_id)
     if request.method == 'POST':
-        form = AddressForm(request.POST, instance=_address, company=company.name)
+        form = AddressFormCompany(request.POST, instance=_address, company=company.name)
         print form
         if form.is_valid():
             end = form.save(commit=False)

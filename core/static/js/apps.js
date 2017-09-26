@@ -85,6 +85,10 @@ $(function(){
 
     $('#job-modal').on('submit', '.js-delete-job-form', deleteJobForm);
 
+
+
+
+
     // company  methods
     function loadCompanyForm(){
         var btn =  $(this);

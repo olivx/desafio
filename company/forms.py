@@ -20,3 +20,4 @@ class JobForm(forms.ModelForm):
         model = Job
         fields = ('company', 'name', 'description', 'salario_min', 'salario_max',
                   'experiencia', 'escolaridade', 'distancia_max',)
+

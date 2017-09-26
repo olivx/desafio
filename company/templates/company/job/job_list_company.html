@@ -40,7 +40,8 @@
         <table id=job-table" class="table table-striped table-hover table-condensed job-table">
             <thead>
             <tr>
-                <th width="250">Vagas </th>
+                <th width="250">EMPRESA CONTRATANTE</th>
+                <th width="400">VAGAS EM ABERTO </th>
 
                 {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
                 <th width="30" class="text-center">EDITAR</th>
@@ -50,7 +51,7 @@
             </tr>
             </thead>
             <tbody>
-            {% include 'company/job/job_table.html' %}
+            {% include 'company/job/job_table_company.html' %}
             </tbody>
 
         </table>

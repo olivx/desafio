@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from cuser.models import CUser as User
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.contrib import messages
+from cuser.models import CUser as User
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import resolve_url as r, render, get_object_or_404, redirect
 
 # Create your views here.
@@ -73,10 +75,20 @@ def company_delete(request, pk):
                                template_name='company/company_modal_delete.html')
 
 
-def job_detail(request, pk):
+def _job_detail(request, pk):
     job = get_object_or_404(Job, pk=pk)
-    form = JobForm(instance=job)
-    return render(request, 'company/job/job_detail.html', {'form': form})
+    form = JobForm(instance=job,company=job.company)
+    return render(request, 'company/job/job_detail.html', {'form': form, 'company': job.company})
+
+
+def job_detail(request, pk):
+    data = {}
+    job = get_object_or_404(Job, pk=pk)
+    form = JobForm(instance=job,company=job.company)
+    context = {'form': form, 'company': job.company}
+    data['disable_all'] = True
+    data['html_form'] = render_to_string('company/job/job_detail.html', context, request=request)
+    return JsonResponse(data)
 
 
 def job_detail_list(request, job, userid):
@@ -89,7 +101,6 @@ def job_detail_list(request, job, userid):
 def job_list_company(request, pk):
     search = request.GET.get('search')
     company = get_object_or_404(Company, pk=pk)
-
 
     if search is not None:
         _list = Job.objects.filter(Q(name__icontains=search) & Q(company=company))
@@ -128,7 +139,7 @@ def job_list(request):
 @login_required(login_url="/accounts/login")
 def job_save(request, company_id):
     obj = Job()
-    company = get_object_or_404(Company,pk=company_id )
+    company = get_object_or_404(Company, pk=company_id)
     message_save = 'Oportunidade  foi adicionada com sucesso'
     return view_service_job_save(request=request, object=obj, company=company, Form=JobForm, klass=Job,
                                  message_type='success',
@@ -142,12 +153,15 @@ def job_save(request, company_id):
 def job_update(request, pk):
     obj = get_object_or_404(Job, pk=pk)
     message_update = 'Oportunidade %s foi alterada com sucesso' % obj.name.upper()
-    return view_service_save(request=request, object=obj, Form=JobForm, klass=Job,
-                             message_type='warning',
-                             context_list='job_list',
-                             message_success=message_update,
-                             template_table='company/job/job_table.html',
-                             template_name='company/job/job_modal_update.html', )
+    return view_service_job_save(request=request, object=obj,
+                                 Form=JobForm,
+                                 klass=Job,
+                                 company=obj.company,
+                                 message_type='warning',
+                                 context_list='job_list',
+                                 message_success=message_update,
+                                 template_table='company/job/job_table_company.html',
+                                 template_name='company/job/job_modal_update.html', )
 
 
 @login_required(login_url="/accounts/login")

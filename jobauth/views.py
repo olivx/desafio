@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 # Create your views here.
 from core.utils import distance
-from core.forms import AddressForm
+from core.forms import AddressFormPerfil
 from core.models import Address
 from jobauth.forms import SignUpForm, CandidateForm
 from jobauth.models import Candidate
@@ -39,7 +39,7 @@ def profile_address_save(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     address = Address.objects.filter(user__id=request.user.id).first()
     if request.method == 'POST':
-        end_form = AddressForm(request.POST, instance=address)
+        end_form = AddressFormPerfil(request.POST, instance=address)
         candidate_form = CandidateForm()
 
         if end_form.is_valid():
@@ -58,7 +58,7 @@ def profile_address_save(request, template='jobauth/candidate_profile.html'):
             }
             return render(request, template, context)
     else:
-        end_form = AddressForm(instance=address)
+        end_form = AddressFormPerfil(instance=address)
         candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
@@ -71,7 +71,7 @@ def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     address = Address.objects.filter(user__id=request.user.id).first()
     if request.method == 'POST':
-        end_form = AddressForm()
+        end_form = AddressFormPerfil()
         candidate_form = CandidateForm(request.POST, instance=candidate)
 
         if candidate_form.is_valid():
@@ -90,7 +90,7 @@ def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
             }
             return render(request, template, context)
     else:
-        end_form = AddressForm(instance=address)
+        end_form = AddressFormPerfil(instance=address)
         candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
@@ -102,7 +102,7 @@ def profile_candidate_save(request, template='jobauth/candidate_profile.html'):
 def profile_address_delete(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     address = Address.objects.filter(user__id=request.user.id).first()
-    address_form = AddressForm(instance=candidate)
+    address_form = AddressFormPerfil(instance=candidate)
     candidate_form = CandidateForm(instance=address)
     if request.method == 'POST':
         if address_form.is_valid():
@@ -122,7 +122,7 @@ def profile_address_delete(request, template='jobauth/candidate_profile.html'):
 def profile_candidate_delete(request, template='jobauth/candidate_profile.html'):
     address = Address.objects.filter(user__id=request.user.id).first()
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
-    address_form = AddressForm(instance=candidate)
+    address_form = AddressFormPerfil(instance=candidate)
     candidate_form = CandidateForm(instance=address)
     if request.method == 'POST':
         if address_form.is_valid():
