@@ -7,9 +7,11 @@
     {% include 'core/messages.html' %}
 </div>
 
+
+
 <div class="row">
     <div class="col-md-offset-2 col-md-8">
-        <form action="">
+        <form action="{% url 'company:job_list_company' company.id %}">
             <div class="form-group">
                 <div class="input-group">
                     <input class="form-control" type="text" name="search" />
@@ -26,17 +28,23 @@
 
 <div class="row" style="margin-top:2em;">
 
+
+    <div class="col-md-offset-3 col-md-6">
+        <div class="form-group">
+            <input type="hidden" class="form-control text-center upper disable"
+                   name="company" id="id_company" value="{{ company }}">
+        </div>
+    </div>
+
     <div class="">
         <table id=job-table" class="table table-striped table-hover table-condensed job-table">
             <thead>
             <tr>
                 <th width="250">Vagas </th>
-                <th width="250">Empresa </th>
-                <!--<th width="300">Empresa</th>-->
 
                 {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
-                <th width="30">EDITAR</th>
-                <th width="30">DELETAR</th>
+                <th width="30" class="text-center">EDITAR</th>
+                <th width="30" class="text-center">DELETAR</th>
                 {% endif %}
 
             </tr>
@@ -74,15 +82,17 @@
         </div>
     </div>
 
-    <div id="company-modal"   class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-
-
-            </div><!-- content -->
+    {% if request.user.is_authenticated and user.profile.kind == request.user.profile.COMPANY or request.user.is_superuser %}
+    <div class="col-md-offset-3 col-md-6">
+        <div class="form-group">
+            <button type="button" class="btn btn-block btn-primary js-open-job-form"
+                    data-url="{% url 'company:job_save' company.id %}">
+                Nova Vaga  <span class="glyphicon glyphicon-plus"></span>
+            </button>
         </div>
     </div>
+    {% endif %}
+
 
     <div id="job-modal"   class="modal fade">
         <div class="modal-dialog">

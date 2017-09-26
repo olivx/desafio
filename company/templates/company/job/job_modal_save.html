@@ -1,5 +1,5 @@
 {% load static %}
-<form action="{%  url 'company:job_save' %}" class="js-save-job-form" method="post">
+<form action="{%  url 'company:job_save' company.id %}" class="js-save-job-form" method="post">
 
     {% csrf_token %}
     <div class="modal-header">
@@ -12,6 +12,7 @@
     <div class="modal-body">
 
         {% include 'core/messages.html' %}
+
         {% include 'company/job/job_form.html' %}
 
     </div>

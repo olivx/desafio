@@ -22,6 +22,7 @@ $(function(){
             }
         });
     };
+
     function saveJobForm(){
         var form =  $(this);
         $.ajax({
@@ -75,7 +76,7 @@ $(function(){
     };
 
     // save job
-    $('.js-open-form-job').click(loadJobForm);
+    $('.js-open-job-form').click(loadJobForm);
     $('#job-modal').on('submit', '.js-save-job-form', saveJobForm);
 
     // update job

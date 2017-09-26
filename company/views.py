@@ -8,21 +8,10 @@ from django.shortcuts import resolve_url as r, render, get_object_or_404, redire
 # Create your views here.
 from company.forms import CompanyForm, JobForm
 from company.models import Company, Job
-from company.services import view_service_save, view_service_delete
+from company.services import view_service_company_save, view_service_delete, view_service_job_save
 from core.utils import paginator
 from jobauth.models import Profile
 
-
-def job_detail(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    form = JobForm(instance=job)
-    return render(request, 'company/job/job_detail.html', {'form': form})
-
-
-def job_detail_list(request, job, userid):
-    users = Job.objects.all()
-    user_list = paginator(request, users)
-    return render(request, 'company/job/job_users_list.html', {'user_list': user_list})
 
 @login_required(login_url='/accounts/login/')
 def job_candidate(request, job, user):
@@ -53,23 +42,23 @@ def company_list(request):
 @login_required(login_url='/accounts/login')
 def company_save(request):
     obj = Company()
-    return view_service_save(request=request, object=obj, Form=CompanyForm, klass=Company,
-                             template_name='company/company_modal_save.html',
-                             context_list='company_list',
-                             template_table='company/company_table.html',
-                             message_success='Compania foi adcionada com sucesso', )
+    return view_service_company_save(request=request, object=obj, Form=CompanyForm, klass=Company,
+                                     template_name='company/company_modal_save.html',
+                                     context_list='company_list',
+                                     template_table='company/company_table.html',
+                                     message_success='Compania foi adcionada com sucesso', )
 
 
 @login_required(login_url="/accounts/login")
 def company_update(request, pk):
     obj = get_object_or_404(Company, pk=pk)
     message_update = 'Compania %s foi alterada com sucesso' % obj.name.upper()
-    return view_service_save(request=request, object=obj, Form=CompanyForm, klass=Company,
-                             message_type='warning',
-                             context_list='company_list',
-                             message_success=message_update,
-                             template_table='company/company_table.html',
-                             template_name='company/company_modal_update.html')
+    return view_service_company_save(request=request, object=obj, Form=CompanyForm, klass=Company,
+                                     message_type='warning',
+                                     context_list='company_list',
+                                     message_success=message_update,
+                                     template_table='company/company_table.html',
+                                     template_name='company/company_modal_update.html')
 
 
 @login_required(login_url="/accounts/login")
@@ -82,22 +71,36 @@ def company_delete(request, pk):
                                message_success=message_delete,
                                template_name='company/company_modal_delete.html')
 
+
+def job_detail(request, pk):
+    job = get_object_or_404(Job, pk=pk)
+    form = JobForm(instance=job)
+    return render(request, 'company/job/job_detail.html', {'form': form})
+
+
+def job_detail_list(request, job, userid):
+    users = Job.objects.all()
+    user_list = paginator(request, users)
+    return render(request, 'company/job/job_users_list.html', {'user_list': user_list})
+
+
 @login_required(login_url="/accounts/login")
 def job_list_company(request, pk):
     search = request.GET.get('search')
     company = get_object_or_404(Company, pk=pk)
 
     if company.address is None:
-        messages.warning(request,'você precisa cadastrar o endereço da Empresa antes de cadastrar a vaga!')
+        messages.warning(request, 'você precisa cadastrar o endereço da Empresa antes de cadastrar a vaga!')
         return render(request, 'company/job/job_list.html', )
 
     if search is not None:
-        _list = Job.objects.filter(Q(company_id=pk), Q(company__name__icontains=search))
+        _list = Job.objects.filter(Q(name__icontains=search) & Q(company=company))
     else:
         _list = Job.objects.filter(company_id=pk)
     jobs = paginator(request=request, object_list=_list, por_page=5)
 
     context = {
+        'company': company,
         'job_list': jobs
     }
 
@@ -121,15 +124,16 @@ def job_list(request):
 
 
 @login_required(login_url="/accounts/login")
-def job_save(request):
+def job_save(request, company_id):
     obj = Job()
+    company = get_object_or_404(Company,pk=company_id )
     message_save = 'Oportunidade  foi adicionada com sucesso'
-    return view_service_save(request=request, object=obj, Form=JobForm, klass=Job,
-                             message_type='success',
-                             context_list='job_list',
-                             message_success=message_save,
-                             template_table='company/job/job_table.html',
-                             template_name='company/job/job_modal_save.html', )
+    return view_service_job_save(request=request, object=obj, company=company, Form=JobForm, klass=Job,
+                                 message_type='success',
+                                 context_list='job_list',
+                                 message_success=message_save,
+                                 template_table='company/job/job_table.html',
+                                 template_name='company/job/job_modal_save.html', )
 
 
 @login_required(login_url="/accounts/login")

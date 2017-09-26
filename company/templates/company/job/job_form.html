@@ -1,10 +1,9 @@
 {% load widget_tweaks %}
 
 
-
 <div class="form-group {% if form.company.errors %} has-error {% endif  %}">
     {{ form.company.label_tag }}
-    {% render_field form.company  class='form-control upper'%}
+    {% render_field form.company  class='form-control upper disable'%}
     {% for error in form.company.errors %}
     <span class="help-block">{{ error }}</span>
     {% endfor %}
