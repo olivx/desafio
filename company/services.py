@@ -116,7 +116,7 @@ def view_service_job_save(request, object, company ,Form, klass, template_name, 
             obj.company = company
             obj.save()
             data['is_form_valid'] = True
-            companies = paginator(request, klass.objects.all())
+            companies = paginator(request, klass.objects.filter(company__id=company.id))
             data['html_table'] = \
                 render_to_string(template_table, {context_list: companies}, request=request)
             message = message_success

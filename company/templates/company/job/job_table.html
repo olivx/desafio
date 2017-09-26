@@ -1,25 +1,30 @@
 {% for job in job_list %}
 <tr>
-    <th class="upper" width="500">
+
+    <th class="upper" width="250">
+        <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
+            {{ job.company }}
+        </a>
+    </th>
+
+    <th class="upper" width="250">
         <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
             {{ job.name }}
         </a>
     </th>
-    <!--<th class="upper">-->
-    <!--</th>-->
 
-    {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
+    {% if user.is_authenticated and user.profile.kind == user.profile.EMPLOYEE %}
     <th  class="text-center upper" width="30">
-        <button class="btn btn-warning js-open-job-form-update"
+        <button class="btn btn-info js-open-job-form-update" title="Detalhes da Vaga"
                 data-url="{% url 'company:job_update' job.id %}">
-            <i class="glyphicon glyphicon-pencil"></i>
+            <i class="glyphicon glyphicon-sunglasses"></i>
         </button>
     </th>
 
     <th  class="text-center upper" width="30">
-        <button class="btn btn-danger js-open-job-form-delete"
+        <button class="btn btn-success js-open-job-form-delete" title="Deseja Se Candidatar a Vaga ?"
                 data-url="{% url 'company:job_delete' job.id %}">
-            <i class="glyphicon glyphicon-trash"></i>
+            <i class="glyphicon glyphicon-thumbs-up"></i>
         </button>
     </th>
     {% endif %}
