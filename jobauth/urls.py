@@ -7,23 +7,22 @@ from jobauth import views as views_auth
 urlpatterns = [
 
 
-    url(r'profile/detail/(?P<user>\d+)', views_auth.profile_detail,
+    url(r'profile/detail/(?P<user>\d+)/$', views_auth.profile_detail,
         name='profile_detail'),
 
-    url(r'profile/'
-        r'/', views_auth.address_candidate,
+    url(r'profile/$', views_auth.address_candidate,
         name='address_candidate'),
 
-    url(r'profile/address/', views_auth.address_save,
+    url(r'profile/address/$', views_auth.address_save,
         name='address_save'),
 
-    url(r'profile/address/delete/', views_auth.profile_address_delete,
+    url(r'profile/address/delete/$', views_auth.profile_address_delete,
         name='profile_address_delete'),
 
-    url(r'profile/candidate/save/', views_auth.candidate_save,
+    url(r'profile/candidate/save/$', views_auth.candidate_save,
         name='candidate_save'),
 
-    url(r'profile/candidate/delete/', views_auth.candidate_delete,
+    url(r'profile/candidate/delete/$', views_auth.candidate_delete,
         name='candidate_delete'),
 
     url(r'signup', views_auth.signup, name='signup'),

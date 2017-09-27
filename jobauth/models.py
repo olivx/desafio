@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+# -*- coding: utf-8 -*-
 from django.db.models.signals import post_save
 from cuser.models import CUser as User
 from django.dispatch import receiver

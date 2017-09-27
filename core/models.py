@@ -19,10 +19,9 @@ class Address(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return u'{0} {1} {2} {3} {4} {5}'\
-            .format(self.logradouro, self.endereco,
-                    self.bairro, self.bairro, self.cidade, self.uf)\
-            .encode('utf-8')
+        return u'{0} , {1} , {2} , {3} ,{4}'.\
+            format(self.endereco, self.numero, self.bairro, self.cidade, self.uf)\
+            .encode('utf-8').decode('utf-8')
 
     class Meta:
         ordering = ['-id']

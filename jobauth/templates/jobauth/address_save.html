@@ -1,9 +1,9 @@
 {% load static %}
-<form action="" class="js-save-address-form" method="post">
+<form action="{% url 'accounts:address_save' %}" class="js-save-address-form" method="post">
 
     {% csrf_token %}
     <div class="modal-header">
-        <h4 class="modal-title">ADD Compania</h4>
+        <h4 class="modal-title">ADD Endereco</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -17,9 +17,7 @@
     </div>
 
     <div class="modal-footer">
-        {% if user.is_authenticated %}
         <button type="submit" class="btn btn-primary">Salvar</button>
-        {% endif %}
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
     </div>
 </form>

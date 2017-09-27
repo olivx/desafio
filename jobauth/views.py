@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from django.contrib import messages
+from django.shortcuts import render, redirect , resolve_url as r
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.http import JsonResponse
+from django.contrib import messages
 from django.conf import settings
 # Create your views here.
-from core.utils import distance
-from core.forms import AddressFormPerfil
-from core.models import Address
 from jobauth.forms import SignUpForm, CandidateForm
+from core.forms import AddressFormPerfil
 from jobauth.models import Candidate
+from core.models import Address
+from core.utils import distance
 
 
 def logout_thanks(request):
@@ -38,12 +38,12 @@ def signup(request):
 def address_candidate(request):
     template = 'jobauth/candidate_profile.html'
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
-    address = Address.objects.filter(user__id=request.user.id).first()
-    end_form = AddressFormPerfil(instance=address, user=request.user)
+    address = Address.objects.filter(user=request.user).first()
+    print address
     candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
-        'address_form': end_form
+        'address': address
     }
     return render(request, template, context)
 
@@ -53,11 +53,15 @@ def address_save(request):
     template = 'jobauth/address_save.html'
     address_form = AddressFormPerfil(request.POST or None, user=request.user)
     if request.method == 'POST':
-        pass
-    else:
-        address_form = AddressFormPerfil(user=request.user)
-        context = {'address_form': address_form}
-        data['html_form'] = render_to_string(template, context, request=request)
+        if address_form.is_valid():
+            address_form.save()
+            data['is_form_valid'] = True
+            data['redirect_url'] = redirect(r('accounts:address_candidate')).url
+            messages.info(request, 'não é possivel addcionar um segundo endereço. ')
+        else:
+            data['is_form_valid'] = False
+    context = {'address_form': address_form}
+    data['html_form'] = render_to_string(template, context, request=request)
     return JsonResponse(data)
 
 

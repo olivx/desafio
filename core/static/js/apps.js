@@ -253,9 +253,29 @@ $(function(){
         });
 
     };
+    function saveFormAddress(){
+        var form = $(this);
+        $.ajax({
+            dataType: 'json',
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function(data){
+                if(data.is_form_valid){
+                $(location).attr('href', data.url)
+                return false;
+                }else{
+                  $('#modal-endereco .modal-content').html(data.html_form)
+                }
+            }
+        });
+
+    return false;
+    }
 
      //company  endereço methods
     $('.js-open-address-form').click(loadFormAddress);
+    $('#modal-endereco').on('submit', '.js-save-address-form', saveFormAddress);
 //    $('.js-save-address-form').click(submit_form_address);
 //    $('.js-update-address-form').click(submit_form_address);
 //    $('.js-delete-modal-address').click(function(e){
