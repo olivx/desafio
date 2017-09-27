@@ -205,11 +205,6 @@ def job_cadidate_company(request):
     if search is None:
         jobs = Job.objects.filter(company__user=request.user)
     else:
-        jobs = Job.objects.filter(Q(name__icontains=search))
+        jobs = Job.objects.filter(Q(company__user=request.user) & Q(name__icontains=search))
     return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
 
-def job_cadidate_company_delete(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-
-
-    return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
