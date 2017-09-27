@@ -1,8 +1,10 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 
 
-def profile_save(request,obej_send, obje, Form_send, Form,
+def profile_save(request, obej_send, obje, Form_send, Form,
                  context_send, _context, msg_success,
                  template='jobauth/candidate_profile.html'):
     """
@@ -45,3 +47,4 @@ def profile_save(request,obej_send, obje, Form_send, Form,
             _context: _form
         }
     return render(request, template, context)
+

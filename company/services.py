@@ -56,7 +56,7 @@ def view_service_company_save(request, object,Form, klass, template_name, contex
     return JsonResponse(data)
 
 
-def view_service_delete(request, object, Form, klass, template_name, context_list,
+def view_service_company_delete(request, object, Form, klass, template_name, context_list,
                         template_table, message_success):
     """
     :param request: 
@@ -72,6 +72,7 @@ def view_service_delete(request, object, Form, klass, template_name, context_lis
     :return: json com is_form_valid , html_table,  html_form
     """
     data = {}
+    form = Form(request.POST or None, instance=object)
     if request.method == 'POST':
         object.delete()
         data['is_form_valid'] = True
@@ -85,7 +86,7 @@ def view_service_delete(request, object, Form, klass, template_name, context_lis
     else:
         data['disable_all'] = True
         data['html_form'] = \
-            render_to_string(template_name, {'form': Form(instance=object)}, request=request)
+            render_to_string(template_name, {'form': form }, request=request)
 
     return JsonResponse(data)
 
@@ -148,7 +149,7 @@ def view_service_job_save(request, object, company ,Form, klass, template_name, 
     return JsonResponse(data)
 
 
-def view_service_delete(request, object, Form, klass, template_name, context_list,
+def view_service_job_delete(request, object, Form, klass, template_name, context_list,
                         template_table, message_success):
     """
     :param request: 
@@ -164,10 +165,11 @@ def view_service_delete(request, object, Form, klass, template_name, context_lis
     :return: json com is_form_valid , html_table,  html_form
     """
     data = {}
+    form = Form(request.POST or None, instance=object, company=object.company)
     if request.method == 'POST':
         object.delete()
         data['is_form_valid'] = True
-        companies = paginator(request, klass.objects.all())
+        companies = paginator(request, klass.objects.filter(company__id=object.company.id))
         data['html_table'] = \
             render_to_string(template_table, {context_list: companies}, request=request)
         message = message_success
@@ -177,6 +179,6 @@ def view_service_delete(request, object, Form, klass, template_name, context_lis
     else:
         data['disable_all'] = True
         data['html_form'] = \
-            render_to_string(template_name, {'form': Form(instance=object)}, request=request)
+            render_to_string(template_name, {'form': form}, request=request)
 
     return JsonResponse(data)

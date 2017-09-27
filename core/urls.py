@@ -4,7 +4,6 @@ from core import views as core_views
 urlpatterns = [
 
 
-
     url(r'company/address/delete/(?P<company_id>\d+)/(?P<address_id>\w+)/$',
         core_views.address_delete, name='address_delete'),
 

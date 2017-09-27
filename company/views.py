@@ -10,26 +10,34 @@ from django.shortcuts import resolve_url as r, render, get_object_or_404, redire
 # Create your views here.
 from company.forms import CompanyForm, JobForm
 from company.models import Company, Job
-from company.services import view_service_company_save, view_service_delete, view_service_job_save
+from company.services import view_service_company_save,\
+    view_service_company_delete, view_service_job_save , view_service_job_delete
+from core.models import Address
 from core.utils import paginator
 from jobauth.models import Profile
 
 
 @login_required(login_url='/accounts/login/')
 def job_candidate(request, job, user):
-    if request.user.is_authenticadated:
-        messages.info(request, 'Vocé deve fazer o login no site para poder se cadastrar as vagas!')
+
+    # usuario precisa estar logano no site
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Vocé deve fazer o login no site para poder se cadastrar as vagas!')
         return redirect(r('company:job_list'))
 
     # usuario precisa ter um endereço para fazer o cadastro no site.
-
+    if not  Address.objects.filter(user=request.user).first():
+        messages.warning(request, 'Vocé deve fazer cadastrar o seu endereço antes de se cadastrar!')
+        return redirect(r('company:job_list'))
 
     job = get_object_or_404(Job, pk=job)
     user = get_object_or_404(User, pk=user)
     if request.method == 'POST':
         job.users.add(user)
         job.save()
-        message = u'parabens você abaca de se candidatar a essa vaga!'.encode('utf-8')
+        message = u'parabens você abaca de se candidatar a vaga de {}!'\
+            .format(job.name.upper())\
+            .encode('utf-8')
         messages.success(request, message)
 
     _list = Job.objects.all()
@@ -79,7 +87,7 @@ def company_update(request, pk):
 def company_delete(request, pk):
     obj = get_object_or_404(Company, pk=pk)
     message_delete = 'Compania %s foi deletada com sucesso' % obj.name.upper()
-    return view_service_delete(request=request, object=obj, Form=CompanyForm, klass=Company,
+    return view_service_company_delete(request=request, object=obj, Form=CompanyForm, klass=Company,
                                context_list='company_list',
                                template_table='company/company_table.html',
                                message_success=message_delete,
@@ -150,7 +158,7 @@ def job_save(request, company_id):
                                  message_type='success',
                                  context_list='job_list',
                                  message_success=message_save,
-                                 template_table='company/job/job_table.html',
+                                 template_table='company/job/job_table_company.html',
                                  template_name='company/job/job_modal_save.html', )
 
 
@@ -173,8 +181,35 @@ def job_update(request, pk):
 def job_delete(request, pk):
     obj = get_object_or_404(Job, pk=pk)
     message_delete = 'Job %s foi deletado com sucesso' % obj.name.upper()
-    return view_service_delete(request=request, object=obj, Form=JobForm, klass=Job,
+    return view_service_job_delete(request=request, object=obj, Form=JobForm, klass=Job,
                                context_list='job_list',
-                               template_table='company/job/job_table.html',
+                               template_table='company/job/job_table_company.html',
                                message_success=message_delete,
                                template_name='company/job/job_modal_delete.html')
+
+@login_required(login_url='/accounts/login/')
+def job_cadidate_list(request):
+
+    search = request.GET.get('search')
+    if search is None:
+        jobs = Job.objects.filter(users=User.objects.get(pk=request.user.id))
+    else:
+        jobs = Job.objects.filter((Q(users=User.objects.get(pk=request.user.id))) &
+                                  Q(name__icontains=search))
+
+    return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
+
+
+def job_cadidate_company(request):
+    search = request.GET.get('search')
+    if search is None:
+        jobs = Job.objects.filter(company__user=request.user)
+    else:
+        jobs = Job.objects.filter(Q(name__icontains=search))
+    return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
+
+def job_cadidate_company_delete(request, pk):
+    job = get_object_or_404(Job, pk=pk)
+
+
+    return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})

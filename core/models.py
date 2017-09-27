@@ -6,7 +6,7 @@ from cuser.models import CUser as User
 
 
 class Address(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     logradouro = models.CharField('Logradouro', max_length=50)
     endereco = models.CharField('Endereco', max_length=60)
     numero = models.PositiveIntegerField("Numero")

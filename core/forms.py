@@ -21,12 +21,20 @@ class AddressFormCompany(forms.ModelForm):
 
 class AddressFormPerfil(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
+        self.user = kwargs.pop('user')
         super(AddressFormPerfil, self).__init__(*args, **kwargs)
         self.fields['user'].empty_label = None
-        self.fields['user'].quesrysert = CUser.objects.filter(email=user.email)
+        self.fields['user'].quesrysert = CUser.objects.filter(email=self.user.email)
 
     class Meta:
         model = Address
         fields = ('user', 'cep', 'endereco', 'numero', 'complemento',
-                  'bairro', 'cidade', 'uf', 'observacao',)
+                  'bairro', 'cidade', 'uf', 'observacao')
+
+
+class AddressFormPerfilUpdate(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ('user', 'cep', 'endereco', 'numero', 'complemento',
+                  'bairro', 'cidade', 'uf', 'observacao')
+

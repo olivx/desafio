@@ -25,13 +25,20 @@
                 {% if user.is_authenticated %}
 
                 {% if user.profile.kind == request.user.profile.EMPLOYEE %}
-                <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
-                    <a href="#">Minhas Vagas</a>
+                <li class="{% if  request.resolver_match.url_name == 'job_cadidate_list'  %} active {% endif %}">
+                    <a href="{% url 'company:job_cadidate_list' %}">Minhas Vagas</a>
+
+                </li> <li class="{% if  request.resolver_match.url_name == 'job_list'  %} active {% endif %}">
+                    <a href="{% url 'company:job_list' %}">Oportunidade de Trabalho</a>
                 </li>
                 {% else %}
 
                 <li class="{% if  request.resolver_match.url_name == 'company_list'  %} active {% endif %}">
                     <a href="{% url 'company:company_list' %}">Minhas Empresas</a>
+                </li>
+
+                <li class="{% if  request.resolver_match.url_name == ''  %} active {% endif %}">
+                    <a href="{% url 'company:job_candidate_company' %}">Meus Candidatos </a>
                 </li>
 
                 {% endif %}
@@ -65,7 +72,7 @@
                         active
                     {% endif %}">
 
-                    <a href="#">CONTATO</a>
+                    <!--<a href="#">CONTATO</a>-->
                 </li>
 
 

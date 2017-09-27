@@ -234,6 +234,34 @@ $(function(){
 
     });
 
+
+    // company methods endereco
+
+    function submit_form_address_company(e){
+            e.preventDefault();
+            $("#company_id").removeAttr('disabled');
+            var url = $(this).attr('data-url')
+            $('#form_address').attr('action', url)
+            $('#form_address').submit()
+    }
+    $('.js-save-address-form').click(submit_form_address_company);
+    $('.js-update-address-form').click(submit_form_address_company);
+    $('.js-delete-modal-address').click(function(e){
+            e.preventDefault();
+
+            var con = confirm('Desejan realmente deletar esse endereço ?')
+            if(con == false){
+                return false;
+            }
+            $("#company_id").removeAttr('disabled');
+            var url = $(this).attr('data-url')
+            $('#form_address').attr('action', url)
+            $('#form_address').submit()
+    });
+
+
+     //perfil endereço methods
+
     function loadFormAddress(e){
 
         var btn = $(this);
@@ -248,11 +276,17 @@ $(function(){
             },
             success: function(data){
                 $('#modal-endereco .modal-content').html(data.html_form)
+                if(data.disable_all){
+                    $('#modal-endereco input').attr('disabled',true)
+                    $('#modal-endereco textarea').attr('disabled',true)
+                    $('#modal-endereco input[type=hidden]').removeAttr('disabled')
+                }
             }
 
         });
 
     };
+
     function saveFormAddress(){
         var form = $(this);
         $.ajax({
@@ -261,9 +295,11 @@ $(function(){
             type: form.attr('method'),
             data: form.serialize(),
             success: function(data){
+
                 if(data.is_form_valid){
-                $(location).attr('href', data.url)
-                return false;
+                $('#modal-endereco').modal('hide')
+                $('.messages').html(data.messages)
+                $('.address_unicode').text(data.address)
                 }else{
                   $('#modal-endereco .modal-content').html(data.html_form)
                 }
@@ -273,29 +309,38 @@ $(function(){
     return false;
     }
 
-     //company  endereço methods
     $('.js-open-address-form').click(loadFormAddress);
     $('#modal-endereco').on('submit', '.js-save-address-form', saveFormAddress);
-//    $('.js-save-address-form').click(submit_form_address);
-//    $('.js-update-address-form').click(submit_form_address);
-//    $('.js-delete-modal-address').click(function(e){
-//            e.preventDefault();
-//
-//            var con = confirm('Desejan realmente deletar esse endereço ?')
-//            if(con == false){
-//                return false;
-//            }
-//            $("#company_id").removeAttr('disabled');
-//            var url = $(this).attr('data-url')
-//            $('#form_address').attr('action', url)
-//            $('#form_address').submit()
-//    });
+    $('#modal-endereco').on('submit', '.js-update-address-form', saveFormAddress);
+    $('#modal-endereco').on('submit', '.js-delete-address-form' , function(){
+           var form = $(this)
+            $.ajax({
+            dataType: 'json',
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function(data){
+
+                if(data.is_form_valid){
+                $('#modal-endereco').modal('hide')
+                $('.messages').html(data.messages)
+                $('.address_unicode').text(data.address)
+                }else{
+                  $('#modal-endereco .modal-content').html(data.html_form)
+                }
+            }
+        });
+
+    return false;
+    });
 
 
-    // profile send form
 
 
-   function submit_form_candidate_save(e){
+
+
+    // subimit candaidate form
+    function submit_form_candidate_save(e){
             e.preventDefault();
             var url = $(this).attr('data-url')
             $('.form_candidate').attr('action', url)
@@ -312,9 +357,6 @@ $(function(){
                 $('.form_candidate').submit()
             }
     };
-
-//    $('.js-send-form-address-save').click(submit_form_address_profile)
-//    $('.js-send-form-address-delete').click(submit_form_address_profile)
 
     $('.js-send-form-candidate-save').click(submit_form_candidate_save)
     $('.js-send-form-candidate-delete').click(submit_form_candidate_delete)

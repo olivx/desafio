@@ -13,8 +13,14 @@ urlpatterns = [
     url(r'profile/$', views_auth.address_candidate,
         name='address_candidate'),
 
-    url(r'profile/address/$', views_auth.address_save,
+    url(r'profile/address/save/$', views_auth.address_save,
         name='address_save'),
+
+    url(r'profile/address/update/$', views_auth.address_update,
+        name='address_update'),
+
+    url(r'profile/address/delete/$', views_auth.address_delete,
+        name='address_delete'),
 
     url(r'profile/address/delete/$', views_auth.profile_address_delete,
         name='profile_address_delete'),

@@ -1,13 +1,12 @@
 from django.contrib import admin
 
 # Register your models here.
-from core.forms import AddressFormCompany
 from core.models import Address
 
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    form = AddressFormCompany
-
-
+    list_filter = ('user',)
+    search_fields = ('user','user__first_name', 'endereco' ,'bairro','cidade',)
+    list_display = ('user','__unicode__',)
 

@@ -1,5 +1,10 @@
+{% load core_tags %}
 {% for job in job_list %}
 <tr>
+
+    <th class="upper" width="400">
+            {{ job.users.all }}
+    </th>
 
     <th class="upper" width="250">
             {{ job.company }}
@@ -9,7 +14,6 @@
             {{ job.name }}
     </th>
 
-    {% if user.is_authenticated and user.profile.kind == user.profile.EMPLOYEE %}
     <th  class="text-center upper" width="30">
         <button class="btn btn-info js-open-job-form-detail" title="Detalhes da Vaga"
                 data-url="{% url 'company:job_detail' job.id %}">
@@ -17,19 +21,17 @@
         </button>
     </th>
 
-    <form method="post" action=" {% url 'company:job_candidate' job.id request.user.id  %}">
-        {% csrf_token %}
     <th  class="text-center upper" width="30">
-        <button class="btn btn-success "
-                title="Deseja Se Candidatar a Vaga ?" type="submit">
-            <i class="glyphicon glyphicon-thumbs-up"></i>
+        <button class="btn btn-danger js-open-job-form"
+                data-url="{% url 'company:job_delete' job.id %}"
+                title="Descadastrar nessa vaga?" type="submit">
+            <i class="glyphicon glyphicon-thumbs-down"></i>
         </button>
     </th>
-    </form>
-    {% endif %}
+
 </tr>
 <tr>
     {% empty %}
-    <th colspan="4" class="bg-warning text-center">Nenhum resutado encontrado </th>
+    <th colspan="" class="bg-warning text-center">Nenhum resutado encontrado </th>
 </tr>
 {% endfor %}

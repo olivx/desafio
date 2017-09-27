@@ -1,9 +1,7 @@
 {% for company in company_list %}
 <tr>
     <th class="upper" width="500">
-        <a href="#">
         {{ company  }}
-        </a>
     </th>
 
     <th  class="text-center upper" width="30">
@@ -11,7 +9,9 @@
                 href="{% url 'company:job_list_company' company.id %}">
             <i class="glyphicon glyphicon-plus"></i>
         </a>
-    </th> <th  class="text-center upper" width="30">
+    </th>
+
+    <th  class="text-center upper" width="30">
         <a role="button" class="btn btn-info"
                 href="{% url 'core:address' company.id %}">
             <i class="glyphicon glyphicon-map-marker"></i>

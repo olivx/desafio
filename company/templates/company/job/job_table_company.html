@@ -2,18 +2,14 @@
 <tr>
 
     <th class="upper" width="250">
-        <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
             {{ job.company }}
-        </a>
     </th>
 
     <th class="upper" width="400">
-        <a href="{% url 'company:job_detail_list' job.id request.user.id %}">
             {{ job.name }}
-        </a>
     </th>
 
-    {% if user.is_authenticated and user.profile.kind == user.profile.COMPANY %}
+
     <th  class="text-center upper" width="30">
         <button class="btn btn-warning js-open-job-form-update" title="Detalhes da Vaga"
                 data-url="{% url 'company:job_update' job.id %}">
@@ -27,7 +23,6 @@
             <i class="glyphicon glyphicon-trash"></i>
         </button>
     </th>
-    {% endif %}
 </tr>
 <tr>
     {% empty %}

@@ -6,7 +6,7 @@
     <div class="col-md-8">
         <div class="form-group {% if address_form.user.errors %} has-error {% endif %}" >
             {{ address_form.user.label_tag }}
-            {% render_field address_form.user class="form-control upper" %}
+            {% render_field address_form.user class="form-control upper disable" %}
             {% for error in address_form.user.errors %}
             <span class="help-block ">{{ error }}</span>
             {% endfor %}

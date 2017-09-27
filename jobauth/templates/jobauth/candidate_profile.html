@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="text-center">
+    <div class="messages text-center">
         {% for message in messages %}
         <div class="alert {{ message.tags }} alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -36,18 +36,18 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th>{{ address }}</th>
+                    <th class="address_unicode">{{ address|default_if_none:"(Nenhum endereço cadastrado)"}}</th>
                     <th  class="text-center upper" width="30">
-                        <button class="btn btn-warning js-open-job-form-detail"
+                        <button class="btn btn-warning js-open-address-form"
                                 title="Editar Endereço"
-                                data-url="">
+                                data-url="{% url 'accounts:address_update' %} ">
                             <i class="glyphicon glyphicon-pencil"></i>
                         </button>
                     </th>
                     <th  class="text-center upper" width="30">
-                        <button class="btn btn-danger js-open-job-form-se-cadastrar"
-                                title="Deeletar Endereço"
-                                data-url="">
+                        <button class="btn btn-danger js-open-address-form"
+                                title="Deletar Endereço"
+                                data-url="{% url 'accounts:address_delete' %}">
                             <i class="glyphicon glyphicon-trash"></i>
                         </button>
                     </th>

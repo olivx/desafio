@@ -1,9 +1,7 @@
 {% for user in user_list %}
 <tr>
     <th  width="500">
-        <a class="upper" href="{% url 'accounts:profile_detail' user.id %}">
         {{  user  }}
-    </a>
     </th>
     <th  class="text-center upper" width="30">
         <button class="btn btn-warning js-open-candidato-form-update"
