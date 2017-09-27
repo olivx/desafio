@@ -1,85 +1,129 @@
 {% load widget_tweaks %}
 
-<!-- cep -->
+<div class="row">
 
-<div class="form-group ">
-    <label for="address_form.cep.id_for_label ">{{ address_form.cep.label  }}</label>
-    <div class="input-group " >
-        {% render_field address_form.cep class="form-control input_cep" %}
 
-        <span class="input-group-btn">
+    <div class="col-md-8">
+        <div class="form-group {% if address_form.user.errors %} has-error {% endif %}" >
+            {{ address_form.user.label_tag }}
+            {% render_field address_form.user class="form-control upper" %}
+            {% for error in address_form.user.errors %}
+            <span class="help-block ">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- cep -->
+    <div class="col-md-4 ">
+        <label for="{{ address_form.cep.id_for_label }}">
+            {{ address_form.cep.label  }}
+        </label>
+
+        <div class="input-group " >
+            {% render_field address_form.cep class="form-control input_cep" %}
+            <span class="input-group-btn">
                 <button type="button" class="btn btn-primary search_cep">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
             </span>
-    </div> <!-- address_form group -->
-    {% for error in address_form.cep.errors %}
-    <span class="help-block ">{{ error }}</span>
-    {% endfor %}
+        </div> <!-- form group -->
+
+        {% for error in address_form.cep.errors %}
+        <span class="help-block ">{{ error }}</span>
+        {% endfor %}
+    </div>
 </div>
 
+<!-- logradouro-->
+<div class="row">
 
+    <!-- rua -->
+    <div class="col-md-10">
 
-<div class="form-group {% if address_form.endereco.errors %} has-error {% endif %}" >
-    <label for="address_form.endereco.id_for_label ">{{ address_form.endereco.label  }}</label>
-    {% render_field address_form.endereco  class='form-control' %}
-    {% for error in address_form.endereco.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
+        <div class="form-group {% if address_form.endereco.errors %} has-error {% endif %}" >
+            <label for="address_form.endereco.id_for_label ">{{ address_form.endereco.label  }}</label>
+            {% render_field address_form.endereco  class='form-control' %}
+            {% for error in address_form.endereco.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- numero -->
+    <div class="col-md-2">
+
+        <div class="form-group {% if address_form.numero.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.numero.id_for_label }}">{{ address_form.numero.label  }}</label>
+            {% render_field address_form.numero  class='form-control' %}
+            {% for error in address_form.numero.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
 </div>
 
+<div class="row ">
+    <div class="col-md-8">
+        <div class="form-group {% if address_form.complemento.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.complemento.id_for_label }}">{{ address_form.complemento.label  }}</label>
+            {% render_field address_form.complemento  class='form-control' %}
+            {% for error in address_form.complemento.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
 
+    <div class="col-md-4">
+        <div class="form-group {% if address_form.uf.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.uf.id_for_label }}">{{ address_form.uf.label  }}</label>
+            {% render_field address_form.uf  class='form-control' %}
+            {% for error in address_form.uf.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
 
-
-<div class="form-group {% if address_form.numero.errors %} has-error {% endif %}" >
-    <label for="render_field.numero.id_for_label ">{{ address_form.numero.label  }}</label>
-    {% render_field address_form.numero  class='form-control' %}
-    {% for error in address_form.numero.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
 </div>
 
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="form-group {% if address_form.cidade.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.cidade.id_for_label }}">{{ address_form.cidade.label  }}</label>
+            {% render_field address_form.cidade  class='form-control' %}
+            {% for error in address_form.cidade.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="form-group {% if address_form.bairro.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.bairro.id_for_label }}">{{ address_form.bairro.label  }}</label>
+            {% render_field address_form.bairro  class='form-control' %}
+            {% for error in address_form.bairro.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
 
 
 
-
-<div class="form-group {% if address_form.complemento.errors %} has-error {% endif %}" >
-    <label for="address_form.complemento.id_for_label ">{{ address_form.complemento.label  }}</label>
-    {% render_field address_form.complemento  class='form-control' %}
-    {% for error in address_form.complemento.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
-</div>
-<div class="form-group {% if address_form.uf.errors %} has-error {% endif %}" >
-    <label for="form.uf.id_for_label ">{{ address_form.uf.label  }}</label>
-    {% render_field address_form.uf  class='form-control' %}
-    {% for error in address_form.uf.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
-</div>
-
-<div class="form-group {% if address_form.cidade.errors %} has-error {% endif %}" >
-    <label for="address_form.cidade.id_for_label ">{{ address_form.cidade.label  }}</label>
-    {% render_field address_form.cidade  class='form-control' %}
-    {% for error in address_form.cidade.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
-</div>
-
-<div class="form-group {% if address_form.bairro.errors %} has-error {% endif %}" >
-    <label for="address_form.bairro.id_for_label ">{{ address_form.bairro.label  }}</label>
-    {% render_field address_form.bairro  class='form-control' %}
-    {% for error in address_form.bairro.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
 </div>
 
-<div class="form-group {% if address_form.observacao.errors %} has-error {% endif %}" >
-    <label for="address_form.observacao.id_for_label ">{{ address_form.observacao.label  }}</label>
-    {% render_field address_form.observacao  class='form-control' rows="3"%}
-    {% for error in address_form.observacao.errors %}
-    <span class="help-block">{{ error }}</span>
-    {% endfor %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group {% if address_form.observacao.errors %} has-error {% endif %}" >
+            <label for="{{ address_form.observacao.id_for_label }}">{{ address_form.observacao.label  }}</label>
+            {% render_field address_form.observacao  class='form-control' rows="3"%}
+            {% for error in address_form.observacao.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-
-

@@ -1,4 +1,5 @@
 # -*- coQueryDictding: utf-8 -*-
+from cuser.models import CUser
 from django import forms
 
 from core.models import Address
@@ -17,9 +18,15 @@ class AddressFormCompany(forms.ModelForm):
         fields = ('cep', 'endereco', 'numero', 'complemento',
                   'bairro', 'cidade', 'uf', 'observacao',)
 
+
 class AddressFormPerfil(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(AddressFormPerfil, self).__init__(*args, **kwargs)
+        self.fields['user'].empty_label = None
+        self.fields['user'].quesrysert = CUser.objects.filter(email=user.email)
+
     class Meta:
         model = Address
-        fields = ('cep', 'endereco', 'numero', 'complemento',
+        fields = ('user', 'cep', 'endereco', 'numero', 'complemento',
                   'bairro', 'cidade', 'uf', 'observacao',)
-

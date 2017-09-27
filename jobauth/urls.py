@@ -10,14 +10,18 @@ urlpatterns = [
     url(r'profile/detail/(?P<user>\d+)', views_auth.profile_detail,
         name='profile_detail'),
 
-    url(r'profile/address/update/', views_auth.profile_address_save,
-        name='profile_address_save'),
+    url(r'profile/'
+        r'/', views_auth.address_candidate,
+        name='address_candidate'),
 
-    url(r'profile/candidate/save/', views_auth.candidate_save,
-        name='candidate_save'),
+    url(r'profile/address/', views_auth.address_save,
+        name='address_save'),
 
     url(r'profile/address/delete/', views_auth.profile_address_delete,
         name='profile_address_delete'),
+
+    url(r'profile/candidate/save/', views_auth.candidate_save,
+        name='candidate_save'),
 
     url(r'profile/candidate/delete/', views_auth.candidate_delete,
         name='candidate_delete'),

@@ -12,7 +12,7 @@ class CompanyForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         company = kwargs.pop('company')
-        super(JobForm,self).__init__(*args, **kwargs)
+        super(JobForm, self).__init__(*args, **kwargs)
         self.fields['company'].empty_label = None
         self.fields['company'].queryset = Company.objects.filter(pk=company.id)
 

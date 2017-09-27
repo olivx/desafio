@@ -185,14 +185,11 @@ $(function(){
 
 
     // method address
-
-    //  busca o cep pelo viaCep
-    $('.search_cep').click(function(){
+    function busca_cep(){
 
         var cep =  $('.input_cep').val();
         cep  = cep.replace('-', '')
         var validacep = /^[0-9]{8}$/;
-
 
        // para ceps validos
         if(validacep.test(cep)){
@@ -220,10 +217,14 @@ $(function(){
             alert('CEP invalido. \nverifique o campo CEP.')
         }
 
-    });
+
+    }
+
+    $('#modal-endereco').on('click','.search_cep', busca_cep)
+    $('.search_cep').click(busca_cep)
+
 
     // limpa o modal de endereço
-
     $('.form_cleaned').click( function(){
              $.each($('input'),function(){
                 $(this).val('');
@@ -233,40 +234,46 @@ $(function(){
 
     });
 
-    function submit_form_address(e){
-            $("#company_id").removeAttr('disabled');
-            e.preventDefault();
-            var url = $(this).attr('data-url')
-            $('#form_address').attr('action', url)
-            $('#form_address').submit()
+    function loadFormAddress(e){
+
+        var btn = $(this);
+        $.ajax({
+
+            type: 'get',
+            dataType: 'json',
+            url: btn.attr('data-url'),
+
+            beforeSend: function(){
+                $('#modal-endereco').modal('show')
+            },
+            success: function(data){
+                $('#modal-endereco .modal-content').html(data.html_form)
+            }
+
+        });
+
     };
 
      //company  endereço methods
-    $('.js-open-address-form').click(submit_form_address);
-    $('.js-save-address-form').click(submit_form_address);
-    $('.js-update-address-form').click(submit_form_address);
-    $('.js-delete-modal-address').click(function(e){
-            e.preventDefault();
-
-            var con = confirm('Desejan realmente deletar esse endereço ?')
-            if(con == false){
-                return false;
-            }
-            $("#company_id").removeAttr('disabled');
-            var url = $(this).attr('data-url')
-            $('#form_address').attr('action', url)
-            $('#form_address').submit()
-    });
+    $('.js-open-address-form').click(loadFormAddress);
+//    $('.js-save-address-form').click(submit_form_address);
+//    $('.js-update-address-form').click(submit_form_address);
+//    $('.js-delete-modal-address').click(function(e){
+//            e.preventDefault();
+//
+//            var con = confirm('Desejan realmente deletar esse endereço ?')
+//            if(con == false){
+//                return false;
+//            }
+//            $("#company_id").removeAttr('disabled');
+//            var url = $(this).attr('data-url')
+//            $('#form_address').attr('action', url)
+//            $('#form_address').submit()
+//    });
 
 
     // profile send form
 
-   function submit_form_address_profile(e){
-            e.preventDefault();
-            var url = $(this).attr('data-url')
-            $('.form_address').attr('action', url)
-            $('.form_address').submit()
-    };
 
    function submit_form_candidate_save(e){
             e.preventDefault();
@@ -286,8 +293,8 @@ $(function(){
             }
     };
 
-    $('.js-send-form-address-save').click(submit_form_address_profile)
-    $('.js-send-form-address-delete').click(submit_form_address_profile)
+//    $('.js-send-form-address-save').click(submit_form_address_profile)
+//    $('.js-send-form-address-delete').click(submit_form_address_profile)
 
     $('.js-send-form-candidate-save').click(submit_form_candidate_save)
     $('.js-send-form-candidate-delete').click(submit_form_candidate_delete)
@@ -373,9 +380,6 @@ $(function(){
 
     $('#candidato-table').on('click', '.js-open-candidato-form-update', loadCandidatoForm);
 
-
-
-
     $('#modal-group').on('shown.bs.modal', function(){
         $('.modal .modal-body').css('overflow-y','auto');
         $('.modal .modal-body').css('height' , $(window).height() * 0.7 );
@@ -406,9 +410,6 @@ $(function(){
 
         });
     });
-
-
-
 
      $('#profile-detail').click(function(e){
             e.preventDefault();

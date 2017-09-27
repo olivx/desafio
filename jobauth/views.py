@@ -35,36 +35,30 @@ def signup(request):
     return render(request, 'jobauth/signup.html', {'form': form})
 
 
-def profile_address_save(request, template='jobauth/candidate_profile.html'):
+def address_candidate(request):
+    template = 'jobauth/candidate_profile.html'
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     address = Address.objects.filter(user__id=request.user.id).first()
-    if request.method == 'POST':
-        end_form = AddressFormPerfil(request.POST, instance=address)
-        candidate_form = CandidateForm()
-
-        if end_form.is_valid():
-            addr = end_form.save(commit=False)
-            addr.user = request.user
-            addr.save()
-            msg = u'Endereco cadastrado com sucesso'.encode('utf-8')
-            messages.success(request, msg)
-        else:
-            msf_error = u'Verifique os erros a baixo.'.encode('utf-8')
-
-            messages.error(request, msf_error)
-            context = {
-                'candidate_form': candidate_form,
-                'address_form': end_form
-            }
-            return render(request, template, context)
-    else:
-        end_form = AddressFormPerfil(instance=address)
-        candidate_form = CandidateForm(instance=candidate)
+    end_form = AddressFormPerfil(instance=address, user=request.user)
+    candidate_form = CandidateForm(instance=candidate)
     context = {
         'candidate_form': candidate_form,
         'address_form': end_form
     }
     return render(request, template, context)
+
+
+def address_save(request):
+    data = {}
+    template = 'jobauth/address_save.html'
+    address_form = AddressFormPerfil(request.POST or None, user=request.user)
+    if request.method == 'POST':
+        pass
+    else:
+        address_form = AddressFormPerfil(user=request.user)
+        context = {'address_form': address_form}
+        data['html_form'] = render_to_string(template, context, request=request)
+    return JsonResponse(data)
 
 
 def candidate_save(request, template='jobauth/candidate_profile.html'):
