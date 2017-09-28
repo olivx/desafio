@@ -48,6 +48,20 @@ pyenv local system
 virtualenv .venv 
 source .venv/bin/activate 
 pip install -r riqueriments.tx 
+python contrib/generate_.env.py
 python manage.py migrate 
+python manage.py runserver
 
 ```
+
+# Acessando o sistema 
+#### Usuario adimin
+- oliveiravicente.net@gmailcom 
+- senha vaiquevai123
+
+##### Usuario Empresa
+ - debora@email.com.br , sonia@email.com
+ - senha vaiquevai123
+### Usuario Candidato 
+ - almeida@email.com , carlos@email.com, thiago@email.com
+ - senha vaiquevai123

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, resolve_url as r, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.template.loader import render_to_string
@@ -34,7 +35,7 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'jobauth/signup.html', {'form': form})
 
-
+@login_required(login_url="/accounts/login")
 def address_candidate(request):
     template = 'jobauth/candidate_profile.html'
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
@@ -46,7 +47,7 @@ def address_candidate(request):
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def address_save(request):
     data = {}
     template = 'jobauth/address_save.html'
@@ -66,7 +67,7 @@ def address_save(request):
     data['html_form'] = render_to_string(template, context, request=request)
     return JsonResponse(data)
 
-
+@login_required(login_url="/accounts/login")
 def address_update(request):
     data = {}
     template = 'jobauth/address_update.html'
@@ -85,7 +86,7 @@ def address_update(request):
     data['html_form'] = render_to_string(template, context, request=request)
     return JsonResponse(data)
 
-
+@login_required(login_url="/accounts/login")
 def address_delete(request):
     data = {}
     template = 'jobauth/address_delete.html'
@@ -104,7 +105,7 @@ def address_delete(request):
     data['html_form'] = render_to_string(template, context, request=request)
     return JsonResponse(data)
 
-
+@login_required(login_url="/accounts/login")
 def candidate_save(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     if request.method == 'POST':
@@ -130,7 +131,7 @@ def candidate_save(request, template='jobauth/candidate_profile.html'):
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def candidate_delete(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     if request.method == 'POST':
@@ -145,7 +146,7 @@ def candidate_delete(request, template='jobauth/candidate_profile.html'):
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def profile_address_delete(request, template='jobauth/candidate_profile.html'):
     candidate = Candidate.objects.filter(user__id=request.user.id).first()
     address = Address.objects.filter(user__id=request.user.id).first()
@@ -165,7 +166,7 @@ def profile_address_delete(request, template='jobauth/candidate_profile.html'):
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def profile_detail(request, user, template='jobauth/profile_modal.html'):
     data = {}
     candidate = Candidate.objects.filter(user__id=user).first()

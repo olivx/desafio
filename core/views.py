@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, resolve_url as r, redirect
 
 # Create your views here.
@@ -11,7 +12,7 @@ from core.models import Address
 def home(request):
     return render(request, 'core/index.html')
 
-
+@login_required(login_url="/accounts/login")
 def address(request, company_id):
     company = get_object_or_404(Company, pk=company_id)
     address = Address.objects.filter(company__id=company_id).first()
@@ -22,7 +23,7 @@ def address(request, company_id):
     }
     return render(request, 'core/address/address.html', context)
 
-
+@login_required(login_url="/accounts/login")
 def address_save(request, company_id, template='core/address/address.html'):
     company = Company.objects.get(pk=company_id)
     form = AddressFormCompany(request.POST or None, company=company.name)
@@ -44,7 +45,7 @@ def address_save(request, company_id, template='core/address/address.html'):
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def address_update(request, company_id, address_id, template='core/address/address.html'):
     _address = Address.objects.get(pk=address_id)
     company = Company.objects.get(pk=company_id)
@@ -71,7 +72,7 @@ def address_update(request, company_id, address_id, template='core/address/addre
     }
     return render(request, template, context)
 
-
+@login_required(login_url="/accounts/login")
 def address_delete(request, company_id, address_id):
     template = 'core/address/address.html'
     _address = Address.objects.get(pk=address_id)

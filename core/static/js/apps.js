@@ -493,10 +493,27 @@ $(function(){
                 $('#candidato-modal .modal-content .distancia .status').html(data.distancia.status);
             }
         });
-
-
-
     });
 
+    // metodos de canidatos a um job de uma empresa
+
+//    function JobCompanyProfileCandidateLoad(){
+//
+//        var btn = $(this)
+//        $.ajax({
+//             url:        btn.attr('data-url'),
+//            type:       'GET',
+//            dataType:   'json',
+//
+//            beforeSend: function(){
+//                $('#candidate-modal').modal('show')
+//            },
+//            success: function(data){
+//                $('#candidate-modal .modal-content').html(data.html_form)
+//            }
+//        });
+//    }
+//
+//    $('.js-open-candidate-form-detail').click(JobCompanyProfileCandidateLoad)
 
 });

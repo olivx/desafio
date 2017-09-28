@@ -1,4 +1,5 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+from django.conf import settings
 import requests
 
 SEIS_MESES = 1
@@ -45,7 +46,7 @@ def paginator(request, object_list, por_page=5):
     return objects_paginated
 
 
-def distance(origin, destination, api_key):
+def distance(origin, destination):
     """
     This function returns the distance in meters between two addresses
     :param origin: the first address
@@ -54,12 +55,10 @@ def distance(origin, destination, api_key):
     :return: The distance in meters between the origin and destination
     """
     url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
-    payload = {'origins': origin, 'destinations': destination, 'key': api_key}
+    payload = {'origins': origin, 'destinations': destination, 'key': settings.API_TOKEN }
     response = requests.post(url, params=payload)
-
     if response.json()['destination_addresses'] == ['']:
         retorno = 'Nao encontrado'
     else:
-         retorno = response.json()# ['rows'][0]['elements'][0]['distance']['value']
-
+         retorno = response.json()
     return retorno

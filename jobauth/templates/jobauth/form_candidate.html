@@ -3,7 +3,7 @@
 <div class="col-md-6">
     <div class="form-group  {% if candidate_form.last_job.errors %} has-error {% endif %}">
         {{ candidate_form.last_job.label_tag }}
-        {% render_field candidate_form.last_job class='form-control' rows='8'%}
+        {% render_field candidate_form.last_job class='form-control ' rows='8'%}
         {% for error in candidate_form.last_job.errors %}
         <span class="help-block" > {{ error }}</span>
         {% endfor %}

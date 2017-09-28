@@ -8,25 +8,26 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import resolve_url as r, render, get_object_or_404, redirect
 
 # Create your views here.
+from core.utils import distance
 from company.forms import CompanyForm, JobForm
+from jobauth.forms import CandidateForm
 from company.models import Company, Job
-from company.services import view_service_company_save,\
-    view_service_company_delete, view_service_job_save , view_service_job_delete
+from company.services import view_service_company_save, \
+    view_service_company_delete, view_service_job_save, view_service_job_delete
 from core.models import Address
 from core.utils import paginator
-from jobauth.models import Profile
+from jobauth.models import Profile, Candidate
 
 
 @login_required(login_url='/accounts/login/')
 def job_candidate(request, job, user):
-
     # usuario precisa estar logano no site
     if not request.user.is_authenticated:
         messages.warning(request, 'Vocé deve fazer o login no site para poder se cadastrar as vagas!')
         return redirect(r('company:job_list'))
 
     # usuario precisa ter um endereço para fazer o cadastro no site.
-    if not  Address.objects.filter(user=request.user).first():
+    if not Address.objects.filter(user=request.user).first():
         messages.warning(request, 'Vocé deve fazer cadastrar o seu endereço antes de se cadastrar!')
         return redirect(r('company:job_list'))
 
@@ -35,8 +36,8 @@ def job_candidate(request, job, user):
     if request.method == 'POST':
         job.users.add(user)
         job.save()
-        message = u'parabens você abaca de se candidatar a vaga de {}!'\
-            .format(job.name.upper())\
+        message = u'parabens você abaca de se candidatar a vaga de {}!' \
+            .format(job.name.upper()) \
             .encode('utf-8')
         messages.success(request, message)
 
@@ -88,10 +89,10 @@ def company_delete(request, pk):
     obj = get_object_or_404(Company, pk=pk)
     message_delete = 'Compania %s foi deletada com sucesso' % obj.name.upper()
     return view_service_company_delete(request=request, object=obj, Form=CompanyForm, klass=Company,
-                               context_list='company_list',
-                               template_table='company/company_table.html',
-                               message_success=message_delete,
-                               template_name='company/company_modal_delete.html')
+                                       context_list='company_list',
+                                       template_table='company/company_table.html',
+                                       message_success=message_delete,
+                                       template_name='company/company_modal_delete.html')
 
 
 def job_detail(request, pk):
@@ -182,14 +183,14 @@ def job_delete(request, pk):
     obj = get_object_or_404(Job, pk=pk)
     message_delete = 'Job %s foi deletado com sucesso' % obj.name.upper()
     return view_service_job_delete(request=request, object=obj, Form=JobForm, klass=Job,
-                               context_list='job_list',
-                               template_table='company/job/job_table_company.html',
-                               message_success=message_delete,
-                               template_name='company/job/job_modal_delete.html')
+                                   context_list='job_list',
+                                   template_table='company/job/job_table_company.html',
+                                   message_success=message_delete,
+                                   template_name='company/job/job_modal_delete.html')
+
 
 @login_required(login_url='/accounts/login/')
 def job_cadidate_list(request):
-
     search = request.GET.get('search')
     if search is None:
         jobs = Job.objects.filter(users=User.objects.get(pk=request.user.id))
@@ -199,12 +200,36 @@ def job_cadidate_list(request):
 
     return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
 
-
-def job_cadidate_company(request):
+@login_required(login_url="/accounts/login")
+def job_candidate_company(request):
     search = request.GET.get('search')
     if search is None:
         jobs = Job.objects.filter(company__user=request.user)
     else:
         jobs = Job.objects.filter(Q(company__user=request.user) & Q(name__icontains=search))
-    return render(request, 'company/job/job_candidated_list.html', {'job_list': jobs})
+    return render(request, 'company/job/job_candidated_list_company.html', {'job_list': jobs})
 
+@login_required(login_url="/accounts/login")
+def job_candidate_company_profile(request, pk, user, company):
+    template = 'company/job/job_candidate_company_profile.html'
+    job = Job.objects.get(pk=pk)
+    user = User.objects.get(pk=user)
+    company = Company.objects.get(pk=company)
+    candidate_form = Candidate.objects.get(user=user)
+    dis = distance(user.address, company.address)
+    _distancia = int(dis['rows'][0]['elements'][0]['distance']['value'])/1000
+    if _distancia < job.distancia_max:
+        css = " bg-success "
+        text_info = "Requisito satisfatório"
+    else:
+        css = " bg-danger "
+        text_info = "Requisito não satisfatório"
+    context = {
+        'user': user,
+        'css': css,
+        'text_info': text_info,
+        'distance_text': dis['rows'][0]['elements'][0]['distance']['text'],
+        'percurso_text': dis['rows'][0]['elements'][0]['duration']['text'],
+        'candidate_form': CandidateForm(instance=candidate_form)
+    }
+    return render(request, template, context)

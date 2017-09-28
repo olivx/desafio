@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% block content%}
+<div class="row">
+    <div class="messages text-center">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="">
+            <table id="company-table" class="table table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>ENDEREÇO DO CANDIDATO</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="address_unicode disable">{{ user.address|default_if_none:"(Nenhum endereço cadastrado)"}}</th>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="candidato">
+            <form class="form_candidate" action="" method="post">
+                <div class="col-md-6">
+
+                    <table id="" class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="text-center">DISTACIA CASA EMPRESA</th>
+                            <th class="text-center">TEMPO DE VIAJEM </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th class=" text-center {{ css }}">{{ distance_text }}</th>
+                            <th class="text-center {{ css }}">{{ percurso_text }}</th>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="form-group  {% if candidate_form.last_job.errors %} has-error {% endif %}">
+                        {{ candidate_form.last_job.label_tag }}
+                        {% render_field candidate_form.last_job class='form-control disable' rows='4'%}
+                        {% for error in candidate_form.last_job.errors %}
+                        <span class="help-block" > {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group  {% if candidate_form.escolaridade.errors %} has-error {% endif %}">
+                        {{ candidate_form.escolaridade.label_tag }}
+                        {% render_field candidate_form.escolaridade class='form-control disable'%}
+                        {% for error in candidate_form.escolaridade.errors %}
+                        <span class="help-block" > {{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group  {% if candidate_form.salario.errors %} has-error {% endif %}">
+                        {{ candidate_form.salario.label_tag }}
+                        {% render_field candidate_form.salario class='form-control disable'%}
+                        {% for error in candidate_form.salario.errors %}
+                        <span class="help-block" > {{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group  {% if candidate_form.experiencia.errors %} has-error {% endif %}">
+                        {{ candidate_form.experiencia.label_tag }}
+                        {% render_field candidate_form.experiencia class='form-control disable'%}
+                        {% for error in candidate_form.experiencia.errors %}
+                        <span class="help-block" > {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="col-md-offset-3 col-md-9">
+                <div class="col-md-4">
+                    <button class="btn btn-block btn-primary "
+                            title="Salvar"
+                            data-url="">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        SALVAR
+                    </button>
+                </div>
+
+                <div class="col-md-4">
+                    <button class="btn btn-block btn-danger "
+                            title="Deletar"
+                            data-url="">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        DELETAR
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div id="modal-endereco" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

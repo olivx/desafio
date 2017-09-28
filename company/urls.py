@@ -13,8 +13,9 @@ urlpatterns = [
     url(r'job/save/(?P<company_id>\d+)/$', company_views.job_save, name='job_save'),
 
     # job candidate company
-    url(r'job/company/candidate/$', company_views.job_cadidate_company, name='job_candidate_company'),
-
+    url(r'job/company/candidate/$', company_views.job_candidate_company, name='job_candidate_company'),
+    url(r'job/company/candidate/profile/(?P<pk>\d+)/(?P<user>\d+)/(?P<company>\d+)/$',
+        company_views.job_candidate_company_profile, name='job_candidate_company_profile'),
 
     # url jobs
     url(r'job/list/$', company_views.job_list, name='job_list'),
