@@ -53,6 +53,15 @@ python manage.py migrate
 python manage.py runserver
 
 ```
+# configurando Token para o api google distance matrix
+ - Vá até o link [clicando aqui](https://developers.google.com/maps/documentation/distance-matrix/intro?hl=pt-br) e faça o login com uma conta google
+ - Clique em obter uma chave 
+ - Selecione um projeto ou crie um novo
+ - CLick em Enable API
+ - copie a nova chave 
+ - vá até o arquivo .env 
+ - substitua o valor de configuração da chave API_TOKEN
+  
 
 # Acessando o sistema 
 #### Usuario adimin
